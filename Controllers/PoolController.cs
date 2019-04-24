@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartPool.Models;
 
 namespace SmartPool.Controllers
 {
-    public class ActivityController : Controller
+    public class PoolController : Controller
     {
         private PoolContext dbContext;
-        public ActivityController(PoolContext context)
+        public PoolController(PoolContext context)
         {
             dbContext = context;
         }

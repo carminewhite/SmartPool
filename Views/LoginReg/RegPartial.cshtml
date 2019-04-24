@@ -1,0 +1,61 @@
+@model RegUser
+<div class="col-sm-5">
+    <div class="justify-content-center row">
+        <h3 class="mb-3">Register</h3>
+    </div>
+    <form asp-action="Register" asp-controller="LoginReg" method="POST">
+
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="FirstName" style="min-width: 160px;">First Name</label>
+            </div>
+            <input type="text" class="form-control" asp-for="FirstName">
+        </div>
+
+        <span asp-validation-for="LastName" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="LastName" style="min-width: 160px;">Last Name</label>
+            </div>
+            <input type="text" class="form-control" asp-for="LastName">
+        </div>
+
+        <span asp-validation-for="Username" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Username" style="min-width: 160px;">Username</label>
+            </div>
+            <input type="text" class="form-control" asp-for="Username">
+        </div>
+
+        <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Email" style="min-width: 160px;">Email</label>
+            </div>
+            <input type="text" class="form-control" asp-for="Email">
+        </div>
+
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Password" style="min-width: 160px;">Password</label>
+            </div>
+            <input type="password" class="form-control" asp-for="Password">
+        </div>
+
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="ConfirmPassword" style="min-width: 160px;">Confirm Password</label>
+            </div>
+            <input type="password" class="form-control" asp-for="ConfirmPassword">
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <a href="/" class="mr-5 mt-1">Go Back</a>
+            <input type="submit" class="btn btn-outline-success" style="min-width: 160px;" value="Register">
+        </div>
+    </form>
+</div>
