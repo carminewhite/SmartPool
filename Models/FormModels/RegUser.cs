@@ -20,14 +20,14 @@ namespace SmartPool.Models
         public string LastName {get;set;}
 
         [Required]
-        [MinLength(2)]
-        [Display(Name = "Username")] 
-        public string Username {get;set;}
-
-        [Required]
         [EmailAddress]
         [Display(Name = "Email")] 
         public string Email {get;set;}
+
+        [Required]
+        [MinLength(7)]
+        [Display(Name = "Phone Number")]
+        public string Phone {get;set;}
 
         [Required]
         [MinLength(8)]
@@ -35,7 +35,6 @@ namespace SmartPool.Models
         [Display(Name = "Password")] 
         public string Password {get;set;}
 
-        [NotMapped]
         [Required]
         [Compare("Password", ErrorMessage = "Password does not match")]
         [Display(Name = "Confirm Password")] 

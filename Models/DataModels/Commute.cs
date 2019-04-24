@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartPool.Models
 {
-    public class Commute
+    public class Commute : DataModel
     {
-       [Key]
-       public int Id {get; set;}
+        [Key]
+        public int Id {get; set;}
         public User user {get; set;}
         public Carpool carpool {get; set;}
 
