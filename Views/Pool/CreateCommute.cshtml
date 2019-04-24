@@ -1,10 +1,68 @@
 <partial name="_Nav"/>
 <hr>
 <div class="row">
-    <form>
-        <div class="form-row">
-            <p>Monday</p>
-        </div>
-        
-    </form>
+    <div class="col"></div>
+    <div class="col-8">
+        <form method="post" controller="Pool">
+            <div class="form-row">
+                <div class="form-group col-4">
+                    <label class="d-block" for="StartPoint">Start Point:</label>
+                    <select id="StartPoint">
+                        <option>Select location...</option>
+                        @foreach (Location loc in @ViewBag.ListofLocations)
+                        {
+                            <option value="@loc.Id">@loc.LocationNickname</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label class="d-block" for="EndPoint">Destination:</label>
+                    <select id="EndPoint">
+                        <option>Select location...</option>
+                        @foreach (Location loc in @ViewBag.ListofLocations)
+                        {
+                            <option value="@loc.Id">@loc.LocationNickname</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label class="d-block" for="Time">Arrival Time:</label>
+                    <input id="Time" type="time" />
+                </div>
+            </div>
+                <a class="d-block btn-sm text-center btn-primary col-3" href="/mylocations">Create New Location</a>
+
+                <p class="mt-4">Select Days for this Route:</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Mon">
+                    <label class="form-check-label" for="Mon">Mon</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Tue">
+                    <label class="form-check-label" for="Tue">Tue</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Wed">
+                    <label class="form-check-label" for="Wed">Wed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Thu">
+                    <label class="form-check-label" for="Thu">Thu</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Fri">
+                    <label class="form-check-label" for="Fri">Fri</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Sat">
+                    <label class="form-check-label" for="Sat">Sat</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="" id="Sun">
+                    <label class="form-check-label" for="Sun">Sun</label>
+                </div>
+                <input class="btn btn-success ml-4" type="submit" value="Add New Route!">
+        </form>
+    </div>
+    <div class="col"></div>
 </div>

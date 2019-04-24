@@ -18,6 +18,7 @@ appsetting.json
 UpgradeLog.XML _UpgradeReport_Files/ 
 ############### # Directories # ############### 
 bin/ 
+Migrations/
 obj/ 
 TestResults/ 
 ################### # Web publish log # ################### 
