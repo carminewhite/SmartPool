@@ -10,14 +10,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartPool.Controllers
 {
-    public class ActivityController : Controller
+    public class PoolController : Controller
     {
         private PoolContext dbContext;
-        public ActivityController(PoolContext context)
+
+        public PoolController(PoolContext context)
         {
             dbContext = context;
         }
 
+        [HttpGet("dashboard")]
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        [HttpGet("my_commutes")]
+        public IActionResult Commutes()
+        {
+            return View();
+        }
+
     }
+
+    
 
 }
