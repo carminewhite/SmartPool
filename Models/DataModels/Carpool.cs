@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartPool.Models
 {
-    public class Carpool
+    public class Carpool : DataModel
     {
-       [Key]
-       public int Id {get; set;}
+        [Key]
+        public int Id {get; set;}
         
         [NotMapped]
         public Commute MondayMerge {get; set;}
@@ -27,14 +27,5 @@ namespace SmartPool.Models
 
 
         public List<Commute> Commutes {get; set;}
-
-        public DateTime CreatedAt {get; set;}
-        public DateTime UpdatedAt {get; set;}
-
-        public Carpool()
-        {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-        }
     }
 }

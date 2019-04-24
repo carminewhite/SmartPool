@@ -41,28 +41,27 @@ namespace SmartPool.Controllers
                 if(dbContext.Users.Any(u => u.Email == form.Email))
                 {
                     ModelState.AddModelError("Email", "Email already in use");
-                    return View("Index");
+                    return View("Registration");
                 }
 
                 User newUser = new User()
                 {
                     FirstName = form.FirstName,
                     LastName = form.LastName,
-                    Username = form.Username,
                     Email = form.Email,
+                    Phone = form.Phone,
                 };
                 PasswordHasher<User> Hasher = new PasswordHasher<User>();
-                newUser.Password = Hasher.HashPassword(newUser, form.Password);
+                newUser.PwHash = Hasher.HashPassword(newUser, form.Password);
 
                 dbContext.Add(newUser);
                 dbContext.SaveChanges();
 
-                // Log user into session
-                HttpContext.Session.SetInt32("LoggedInUserId", newUser.UserId);
+                HttpContext.Session.SetInt32("LoggedInUserId", newUser.Id);
 
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Dashboard", "Pool");
             }
-            return View("Index");
+            return View("Registration");
         }
 
         [HttpPost("login")]
@@ -70,33 +69,27 @@ namespace SmartPool.Controllers
         {
             if(ModelState.IsValid)
             {
-                // If inital ModelState is valid, query for a user with provided email
                 var userInDb = dbContext.Users.FirstOrDefault(u => u.Email == form.LogEmail);
-                // If no user exists with provided email
+
                 if(userInDb == null)
                 {
-                    // Add an error to ModelState and return to View!
                     ModelState.AddModelError("LogEmail", "Invalid Email/Password");
                     return View("Index");
                 }
                 
-                // Initialize hasher object
                 var hasher = new PasswordHasher<LogUser>();
+
+                var result = hasher.VerifyHashedPassword(form, userInDb.PwHash, form.LogPassword);
                 
-                // verify provided password against hash stored in db
-                var result = hasher.VerifyHashedPassword(form, userInDb.Password, form.LogPassword);
-                
-                // result can be compared to 0 for failure
                 if(result == 0)
                 {
                     ModelState.AddModelError("LogEmail", "Invalid Email/Password");
                     return View("Index");
                 }
 
-                // Log user into session
-                HttpContext.Session.SetInt32("LoggedInUserId", userInDb.UserId);
+                HttpContext.Session.SetInt32("LoggedInUserId", userInDb.Id);
 
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Dashboard", "Pool");
             }
             return View("Index");
         }
