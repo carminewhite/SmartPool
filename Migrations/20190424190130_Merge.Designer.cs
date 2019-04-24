@@ -9,8 +9,8 @@ using SmartPool.Models;
 namespace SmartPool.Migrations
 {
     [DbContext(typeof(PoolContext))]
-    [Migration("20190424025139_RemovedUsernameProp")]
-    partial class RemovedUsernameProp
+    [Migration("20190424190130_Merge")]
+    partial class Merge
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

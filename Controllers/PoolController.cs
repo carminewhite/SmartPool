@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartPool.Models;
+using System.Net.Http;
 
 namespace SmartPool.Controllers
 {
@@ -35,7 +36,8 @@ namespace SmartPool.Controllers
             // dbContext.SaveChanges();
 
         private PoolContext dbContext;
-        public PoolController(PoolContext context)
+    
+        public PoolController(PoolContext context, HttpService httpservice)
         {
             dbContext = context;
         }
@@ -45,6 +47,123 @@ namespace SmartPool.Controllers
         {
             return View();
         }
+
+        [HttpGet("/commute/create")]
+        public IActionResult CommuteForm()
+        {
+            return View();
+        }
+
+        [HttpPost("/commute/create")]
+        public IActionResult AddCommute(CommuteForm form)
+        {
+            if(HttpContext.Session.Keys.Contains("LoggedInUserId"))
+            {
+                if(ModelState.IsValid)
+                {
+                    User loggedIn = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+                    
+                    if(form.Monday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Monday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Tuesday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Tuesday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Wednesday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Wednesday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Thurday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Thursday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Friday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Friday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Saturday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Saturday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Sunday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Sunday;
+                        newCommute.StartPt = form.StartPt;
+                        newCommute.EndPt = form.EndPt;
+                        newCommute.user = loggedIn;
+
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+
+                    return RedirectToAction("Dashboard");
+                }
+                else
+                {
+                    return View("AddCommute");
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+        }
+
+        
+
 
         [HttpGet("my_commutes")]
         public IActionResult Commutes()

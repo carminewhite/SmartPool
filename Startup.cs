@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore; 
 using SmartPool.Models;
+using SmartPool.Controllers;
 
 namespace SmartPool
 {
@@ -27,6 +28,7 @@ namespace SmartPool
             services.AddDbContext<PoolContext>(options => options.UseMySql(mySqlConnection));
             services.AddSession();            
             services.AddMvc();
+            services.AddHttpClient<HttpService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
