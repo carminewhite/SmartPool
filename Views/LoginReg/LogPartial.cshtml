@@ -1,0 +1,29 @@
+@model LogUser
+<div class="col-sm-5">
+    <div class="justify-content-center row">
+        <h3 class="mb-3">Log In</h3>
+    </div>
+    <form asp-action="Login" asp-controller="LoginReg" method="POST">
+
+        <span asp-validation-for="LogEmail" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="LogEmail" style="min-width: 160px;">Email</label>
+            </div>
+            <input type="text" class="form-control"  asp-for="LogEmail">
+        </div>
+
+        <span asp-validation-for="LogPassword" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="LogPassword" style="min-width: 160px;">Password</label>
+            </div>
+            <input type="password" class="form-control" asp-for="LogPassword">
+        </div>
+
+        <div class="row justify-content-center">
+            <input type="submit" class="d-block btn btn-outline-success" style="min-width: 160px;" value="Log In">
+        </div>
+
+    </form>
+</div>
