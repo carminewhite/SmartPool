@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartPool.Models
 {
-    public class RegUser
+    public class UpdateUser
     {
         [Required]
         [MinLength(2)]
@@ -27,14 +27,8 @@ namespace SmartPool.Models
         public string Phone {get;set;}
 
         [Required]
-        [MinLength(8)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")] 
+        [Display(Name = "Password")]
         public string Password {get;set;}
-
-        [Required]
-        [Compare("Password", ErrorMessage = "Password does not match")]
-        [Display(Name = "Confirm Password")] 
-        public string ConfirmPassword {get;set;}
     }
 }
