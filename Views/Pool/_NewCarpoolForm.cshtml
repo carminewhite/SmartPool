@@ -1,0 +1,14 @@
+@model CreateCarpool
+<div class="row justify-content-center mt-3">
+    <h4>Create a New Carpool</h4>
+</div>
+<form asp-action="CreateCarpool" asp-controller="Pool" method="POST">
+    <div class="row justify-content-center mt-3">
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Name" class="mr-3">New Carpool's Name:</label>
+        <input type="text" asp-for="Name">
+    </div>
+    <div class="row justify-content-center mt-3">
+        <input type="submit" value="Create New Carpool">
+    </div>
+</form>
