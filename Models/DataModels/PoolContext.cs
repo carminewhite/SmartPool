@@ -11,9 +11,6 @@ using SmartPool.Models;
             public DbSet<Commute> Commutes {get;set;}
             public DbSet<Carpool> Carpools {get;set;}
             public DbSet<Location> Locations {get;set;}
-<<<<<<< HEAD
-=======
             public DbSet<Ridership> Riderships {get;set;}
->>>>>>> 515cf0b4be585ec6a23e142d9f3bf3739bfb4429
 
     }

@@ -9,15 +9,6 @@ namespace SmartPool.Models
     {
         [Key]
         public int Id {get; set;}
-<<<<<<< HEAD
-        public User user {get; set;}
-        public Carpool carpool {get; set;}
-        public string StartPt {get; set;}
-        public string EndCity {get; set;}
-        public string EndPt {get; set;}
-
-=======
->>>>>>> 515cf0b4be585ec6a23e142d9f3bf3739bfb4429
         public DateTime ArriveBy {get; set;}
         public DayOfWeek Day {get; set;}
 
