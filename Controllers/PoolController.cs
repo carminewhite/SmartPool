@@ -50,8 +50,11 @@ namespace SmartPool.Controllers
                 return RedirectToAction("Index", "LoginReg");
             }
 
-            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
-            return View(logged_in_user);
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                    .Include(u => u.carpools)
+                                    .FirstOrDefault();
+            ViewBag.logged_in_user = logged_in_user;
+            return View();
         }
 
         [HttpGet("/commute/create")]
@@ -263,6 +266,7 @@ namespace SmartPool.Controllers
             return View();
             
         }
+
         [HttpPost("profile/update")]
         public IActionResult ProfileUpdate(UpdateUser form)
         {
@@ -299,7 +303,6 @@ namespace SmartPool.Controllers
                 return View("Profile");
             }
         }
-    }
 
         // [HttpPost("create-new-commute")]
         // public IActionResult CreateNewCommute(FormCommute form)
@@ -314,6 +317,42 @@ namespace SmartPool.Controllers
 
         // }
 
-    
+        [HttpPost("create-carpool")]
+        public IActionResult CreateCarpool(CreateCarpool form)
+        {
+            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+            Carpool newCarpool = new Carpool()
+            {
+                Name = form.Name,
+                UserId = logged_in_user.Id
+            };
 
+            dbContext.Add(newCarpool);
+            dbContext.SaveChanges();
+
+            int createdCarpoolId = dbContext.Carpools.Last().Id;
+            return RedirectToAction("Carpool", new { id = createdCarpoolId});
+        }
+
+        [HttpGet("carpool/{id}")]
+        public IActionResult Carpool(int id)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+            Carpool carpool = dbContext.Carpools.Where(c => c.Id == id)
+                                .Include(c => c.user)
+                                .Include(c => c.commutes)
+                                .ThenInclude(com => com.startLocation)
+                                .Include(c => c.commutes)
+                                .ThenInclude(com => com.endLocation)
+                                .Include(c => c.riderships)
+                                .ThenInclude(r => r.user)
+                                .FirstOrDefault();
+            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+            ViewBag.logged_in_user = logged_in_user;
+            return View(carpool);
+        }
+    }
 }
