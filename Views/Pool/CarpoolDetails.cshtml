@@ -34,29 +34,16 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td scope="col-3">Monday</td>
-                        <td scope="col-3">8:00AM</td>
-                        <td scope="col-3">Bellefield Office Park</td>
-                        <td scope="col-3">Bellevue</td>
+                        @foreach (Commute c in @Model.commutes)
+                        {
+                            <td scope="col-3">@c.Day</td>
+                            <td scope="col-3">@c.ArriveBy</td>
+                            <td scope="col-3">Bellefield Office Park</td>
+                            <td scope="col-3">Bellevue</td>
+                        }
+
                     </tr>
-                    <tr>
-                        <td scope="col-3">Monday</td>
-                        <td scope="col-3">5:00PM</td>
-                        <td scope="col-3">Bellevue</td>
-                        <td scope="col-3">Bellefield Office Park</td>
-                    </tr>
-                    <tr>
-                        <td scope="col-3">Tuesday</td>
-                        <td scope="col-3">8:00AM</td>
-                        <td scope="col-3">Bellefield Office Park</td>
-                        <td scope="col-3">Bellevue</td>
-                    </tr>
-                    <tr>
-                        <td scope="col-3">Monday</td>
-                        <td scope="col-3">8:00AM</td>
-                        <td scope="col-3">Bellefield Office Park</td>
-                        <td scope="col-3">Bellevue</td>
-                    </tr>
+
 
                 </tbody>
             </table>
