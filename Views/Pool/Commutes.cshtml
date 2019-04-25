@@ -1,46 +1,45 @@
 <partial name="_Nav"/>
 <hr>
 <div class="row">
-    <div class="col">
+    <div class="col pre-scrollable">
+        <h3>Commutes Available:</h3>
         <table class="mt-4 table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col-3">Commute Day</th>
-                    <th scope="col-3">Arrival</th>
-                    <th scope="col-3">Start Point</th>
-                    <th scope="col-3">End Point</th>
+                    <th>Carpool Name</th>
+                    <th>Commute Day</th>
+                    <th>Arrive By</th>
+                    <th>Start City</th>
+                    <th>End City</th>
+                    <th>Show On Map</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td scope="col-3">Mon</td>
-                    <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
-                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/carpool">Bill and Ted's Excellent Adventure</a></td>
+                    <td>Mon</td>
+                    <td>8:00AM</td>
+                    <td>Bellevue</td>
+                    <td>Seattle</td>
+                    <td id="#showmap" ><a href="">Show</a></td>
                 </tr>
                 <tr>
-                    <td scope="col-3">Mon</td>
-                    <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
-                    <td scope="col-3"><a href="">Seattle</a></td>
-                </tr>
-                <tr>
-                    <td scope="col-3">Mon</td>
-                    <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
-                    <td scope="col-3"><a href="">Seattle</a></td>
-                </tr>
-                <tr>
-                    <td scope="col-3">Mon</td>
-                    <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
-                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/carpool">Bill and Ted's Excellent Adventure</a></td>
+                    <td>Mon</td>
+                    <td>8:00AM</td>
+                    <td>Bellevue</td>
+                    <td>Seattle</td>
+                    <td id="#showmap" ><a href="">Show</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="col">
-        <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe>
-    </div>
 </div>
-<partial name="_CarpoolSchedule"/>
+
+<div id="mapholder" class="row">
+    <div class="col"></div>
+    <div class="col">
+        <iframe width="700" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe>
+    </div>
+    <div class="col"></div>
+</div>

@@ -47,3 +47,7 @@ body {
 /* * {
     border: 1px dotted red;
 } */
+
+#mapholder {
+    visibility: none;
+}
