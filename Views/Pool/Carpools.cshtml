@@ -1,3 +1,100 @@
+@{
+    Layout = null;
+}
+
+@model ViewPools
+
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Smart Pool</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 60%;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+      function initMap() {
+        var markerArray = [];
+
+        // Instantiate a directions service.
+        var directionsService = new google.maps.DirectionsService;
+
+        // Create a map and center it
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: @Model.ClickedCommute.startLocation.Coords
+        });
+
+        // Create a renderer for directions and bind it to the map.
+        var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
+
+        // Instantiate an info window to hold step text.
+        var stepDisplay = new google.maps.InfoWindow;
+
+        // Display the route between the initial start and end selections.
+        calculateAndDisplayRoute(
+            directionsDisplay, directionsService, markerArray, stepDisplay, map);
+        // Listen to change events from the start and end lists.
+      }
+
+      function calculateAndDisplayRoute(directionsDisplay, directionsService,
+          markerArray, stepDisplay, map) {
+        // First, remove any existing markers from the map.
+        for (var i = 0; i < markerArray.length; i++) {
+          markerArray[i].setMap(null);
+        }
+
+        // Retrieve the start and end locations and create a DirectionsRequest using
+        directionsService.route({
+          origin: @Model.ClickedCommute.startLocation.Coords,
+          destination: @Model.ClickedCommute.endLocation.Coords,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          // Route the directions and pass the response to a function to create
+          // markers for each step.
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            showSteps(response, markerArray, stepDisplay, map);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+      function showSteps(directionResult, markerArray, stepDisplay, map) {
+        // For each step, place a marker, and add the text to the marker's infowindow.
+        // Also attach the marker to an array so we can keep track of it and remove it
+        // when calculating new routes.
+        var myRoute = directionResult.routes[0].legs[0];
+        /* for (var i = 0; i < myRoute.steps.length; i++) {
+          var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+          marker.setMap(map);
+          marker.setPosition(myRoute.steps[i].start_location);
+          attachInstructionText(
+              stepDisplay, marker, myRoute.steps[i].instructions, map);
+        } */
+      }
+
+      function attachInstructionText(stepDisplay, marker, text, map) {
+        google.maps.event.addListener(marker, 'click', function() {
+          // Open an info window when the marker is clicked on, containing the text
+          // of the step.
+          stepDisplay.setContent(text);
+          stepDisplay.open(map, marker);
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc_4rfCm9kufSuafhtXU56C_gaeayl1o&callback=initMap">
+    </script>
+
 <partial name="_Nav"/>
 <hr>
 
@@ -5,35 +102,29 @@
 <div class="row">
     <div class="col pre-scrollable d-block">
         <table class="mt-4 table table-striped table-bordered">
+
             <thead>
                 <tr>
                     <th>Carpool Name</th>
                     <th>Commute Day</th>
                     <th>Arrive By</th>
-                    <th>Start City</th>
-                    <th>End City</th>
+                    <th>Start</th>
+                    <th>End</th>
                     <th>Show On Map</th>
                 </tr>
             </thead>
             <tbody>
+            @foreach (var com in @Model.AllCommutes)
+            {
                 <tr>
-                    <td><a href="/carpool-details">Bill and Ted's Excellent Adventure</a></td>
-                    <td>Mon</td>
-                    <td>8:00AM</td>
-                    <td>Bellevue</td>
-                    <td>Seattle</td>
-                    <td id="#showmap" ><a href="">Show</a></td>
+                    <td><a href="/carpool-details">@com.carpool.Name</a></td>
+                    <td>@com.Day</td>
+                    <td>@com.ArriveBy.ToString("hh:mm tt")</td>
+                    <td>@com.startLocation.LocationNickname</td>
+                    <td>@com.endLocation.LocationNickname</td>
+                    <td id="#showmap" ><a href="/carpools/@com.Id">Show</a></td>
                 </tr>
-                <tr>
-
-
-                    <td><a href="/carpool-details">Bill and Ted's Excellent Adventure</a></td>
-                    <td>Mon</td>
-                    <td>8:00AM</td>
-                    <td>Bellevue</td>
-                    <td>Seattle</td>
-                    <td id="#showmap" ><a href="">Show</a></td>
-                </tr>
+            }
             </tbody>
         </table>
     </div>
@@ -41,8 +132,12 @@
 
 <div id="mapholder" class="row mt-4">
     <div class="col"></div>
-    <div class="col">
-        <iframe width="700" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe>
-    </div>
+        <div class="col" id="map">
+        <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->
+        </div>
+
     <div class="col"></div>
 </div>
+
+  </body>
+</html>

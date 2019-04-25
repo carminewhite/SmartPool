@@ -210,28 +210,23 @@ namespace SmartPool.Controllers
         
 
 
-        [HttpGet("commutes/{id}")]
-        public IActionResult Commutes()
-        {
-            bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
-            if(idValid)
-            {
-                Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
-                return View(clickedCommute);
-            }
-            else
-            {
-                Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
-                return View(defaultCommute);
-            }
-            
+        // [HttpGet("commutes/{id}")]
+        // public IActionResult Commutes()
+        // {
+        //     bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
+        //     if(idValid)
+        //     {
+        //         Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
+        //         return View(clickedCommute);
+        //     }
+        //     else
+        //     {
+        //         Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
+        //         return View(defaultCommute);
+        //     }
+        // }
 
-            // Dictionary<string, string> Package = new Dictionary<string, string>();
-            // Package.Add("origin-lat", origin[0]);
-            // Package.Add("origin-lng", origin[1]);
-        }
-
-        [HttpGet("carpools")]
+        [HttpGet("carpools/{id}")]
         public IActionResult Carpools()
         {
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
@@ -239,7 +234,29 @@ namespace SmartPool.Controllers
                 return RedirectToAction("Index", "LoginReg");
             }
 
-            return View();
+            List<Commute> AllCommutes = dbContext.Commutes.Where(c => c.Id!=null).Include(c => c.carpool).ThenInclude(c => c.user).Include(c => c.carpool).ThenInclude(c => c.riderships).ToList();
+            bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
+            if(idValid)
+            {
+                Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
+                ViewPools Data = new ViewPools()
+                {
+                    ClickedCommute = clickedCommute,
+                    AllCommutes = AllCommutes
+                };
+                return View(Data);
+            }
+            else
+            {
+                Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
+                ViewPools Data = new ViewPools()
+                {
+                    ClickedCommute = defaultCommute,
+                    AllCommutes = AllCommutes
+                };
+               
+                return View(Data);
+            }
         }
 
 
