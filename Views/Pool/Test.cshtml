@@ -66,7 +66,12 @@
         calculateAndDisplayRoute(
             directionsDisplay, directionsService, markerArray, stepDisplay, map);
         // Listen to change events from the start and end lists.
-        
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(
+              directionsDisplay, directionsService, markerArray, stepDisplay, map);
+        };
+        document.getElementById('start').addEventListener('change', onChangeHandler);
+        document.getElementById('end').addEventListener('change', onChangeHandler);
       }
 
       function calculateAndDisplayRoute(directionsDisplay, directionsService,
