@@ -174,15 +174,28 @@ namespace SmartPool.Controllers
         
 
 
-        [HttpGet("commutes")]
-        public IActionResult Commutes()
+        [HttpGet("carpools")]
+        public IActionResult Carpools()
         {
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
                 return RedirectToAction("Index", "LoginReg");
             }
+
             return View();
         }
+
+        [HttpGet("carpool-details")]
+        public IActionResult CarpoolDetails()
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            return View();
+        }
+        
 
         [HttpGet("profile")]
         public IActionResult Profile()
