@@ -1,0 +1,79 @@
+<partial name="_Nav"/>
+@model Carpool
+
+<hr>
+<div class="row">
+    <div class="col">
+        <h4 class="d-block bg-success p-3 text-light text-center rounded">Edit Carpool Details</h4>
+        <h3 class="mt-4 d-inline">Carpool Name:</h3> <input class="ml-2 col-9" type="text" value="@Model.Name">
+        <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p><textarea class="col-12">@Model.Description</textarea>
+
+
+    </div>
+
+
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="mt-4">
+            <p>Riders in this pool:</p>
+            <div class="row">
+                <div class="ml-3 d-inline text-center">
+                    <img class="p-2" src="https://via.placeholder.com/150"><br>
+                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
+                </div>
+                <div class="ml-3 d-inline text-center">
+                    <img class="p-2" src="https://via.placeholder.com/150"><br>
+                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
+                </div>
+                <div class="ml-3 d-inline text-center">
+                    <img class="p-2" src="https://via.placeholder.com/150"><br>
+                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
+                </div>
+                <div class="ml-3 d-inline text-center">
+                    <img class="p-2" src="https://via.placeholder.com/150"><br>
+                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="mt-4">
+            <table class="my-4 table table-bordered">
+                <thead>
+                    <th scope="col-2">Day</th>
+                    <th scope="col-2">Arrive By</th>
+                    <th scope="col-2">Destination</th>
+                    <th scope="col-2">City</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (Commute c in @Model.commutes)
+                        {
+                            <td scope="col-3">@c.Day</td>
+                            <td scope="col-3">@c.ArriveBy</td>
+                        }
+                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
+                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
+                    </tr>
+                    <tr>
+                        <td scope="col-3"><span id="Day" contenteditable>Monday</span></td>
+                        <td scope="col-3"><span id="Time" contenteditable>8:00AM</span></td>
+                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
+                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
+                    </tr>
+                    <tr>
+                        <td scope="col-3"><span id="Day" contenteditable>Monday</span></td>
+                        <td scope="col-3"><span id="Time" contenteditable>8:00AM</span></td>
+                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
+                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <a href="" class="mt-4 d-inline btn btn-success p-3">Update Schedule</a>
+
+        </div>
+    </div>
+</div>

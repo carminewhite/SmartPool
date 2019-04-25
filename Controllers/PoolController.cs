@@ -238,7 +238,10 @@ namespace SmartPool.Controllers
                     ClickedCommute = defaultCommute,
                     AllCommutes = AllCommutes
                 };
+<<<<<<< HEAD
                 
+=======
+>>>>>>> c37fb2f6fad917f8d7f1f8ba1d890dd205418858
                 return View(Data);
             }
         }
@@ -253,6 +256,29 @@ namespace SmartPool.Controllers
             }    
             return View();
         }
+
+
+        [HttpGet("update/carpool/{id}")]
+        public IActionResult UpdateCarpool(int id)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+            Carpool carpool = dbContext.Carpools.Where(c => c.Id == id)
+                                .Include(c => c.user)
+                                .Include(c => c.commutes)
+                                .ThenInclude(com => com.startLocation)
+                                .Include(c => c.commutes)
+                                .ThenInclude(com => com.endLocation)
+                                .Include(c => c.riderships)
+                                .ThenInclude(r => r.user)
+                                .FirstOrDefault();
+            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+            ViewBag.logged_in_user = logged_in_user;
+            return View(carpool);
+        }
+
 
         [HttpGet("profile")]
         public IActionResult Profile()
