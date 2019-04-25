@@ -1,19 +1,42 @@
 @{
     Layout = null;
 }
-
-@model ViewPools
+@model Commute
 
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Smart Pool</title>
+    <title>Test</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
         height: 60%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #warnings-panel {
+        width: 100%;
+        height:10%;
+        text-align: center;
       }
     </style>
   </head>
@@ -26,10 +49,10 @@
         // Instantiate a directions service.
         var directionsService = new google.maps.DirectionsService;
 
-        // Create a map and center it
+        // Create a map and center it on Manhattan.
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: @Model.ClickedCommute.startLocation.Coords
+          center: @Model.startLocation.Coords
         });
 
         // Create a renderer for directions and bind it to the map.
@@ -52,9 +75,10 @@
         }
 
         // Retrieve the start and end locations and create a DirectionsRequest using
+        // WALKING directions.
         directionsService.route({
-          origin: @Model.ClickedCommute.startLocation.Coords,
-          destination: @Model.ClickedCommute.endLocation.Coords,
+          origin: @Model.startLocation.Coords,
+          destination: @Model.endLocation.Coords,
           travelMode: 'DRIVING'
         }, function(response, status) {
           // Route the directions and pass the response to a function to create
@@ -95,49 +119,58 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc_4rfCm9kufSuafhtXU56C_gaeayl1o&callback=initMap">
     </script>
 
+
+
 <partial name="_Nav"/>
 <hr>
-
-<h4 class="d-block bg-success p-3 text-light text-center rounded">Carpools Available</h4>
 <div class="row">
-    <div class="col pre-scrollable d-block">
+    <div class="col">
         <table class="mt-4 table table-striped table-bordered">
-
             <thead>
                 <tr>
-                    <th>Carpool Name</th>
-                    <th>Commute Day</th>
-                    <th>Arrive By</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Show On Map</th>
+                    <th scope="col-3">Commute Day</th>
+                    <th scope="col-3">Arrival</th>
+                    <th scope="col-3">Start Point</th>
+                    <th scope="col-3">End Point</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach (var com in @Model.AllCommutes)
-            {
                 <tr>
-                    <td><a href="/carpool-details">@com.carpool.Name</a></td>
-                    <td>@com.Day</td>
-                    <td>@com.ArriveBy.ToString("hh:mm tt")</td>
-                    <td>@com.startLocation.LocationNickname</td>
-                    <td>@com.endLocation.LocationNickname</td>
-                    <td id="#showmap" ><a href="/carpools/@com.Id">Show</a></td>
+                    <td scope="col-3">Thurs</td>
+                    <td scope="col-3">8:00AM</td>
+                    <td scope="col-3">Bellevue</td>
+                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/commutes/10">Show</a></td>
                 </tr>
-            }
+                <tr>
+                    <td scope="col-3">Tues</td>
+                    <td scope="col-3">8:00AM</td>
+                    <td scope="col-3">Bellevue</td>
+                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/commutes/8">Show</a></td>
+                </tr>
+                <tr>
+                    <td scope="col-3">Mon</td>
+                    <td scope="col-3">8:00AM</td>
+                    <td scope="col-3">Bellevue</td>
+                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/commutes/9">Show</a></td>
+                </tr>
+                <tr>
+                    <td scope="col-3">Mon</td>
+                    <td scope="col-3">8:00AM</td>
+                    <td scope="col-3"><a href="">Bellevue</a></td>
+                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td>Show</td>
+                </tr>
             </tbody>
         </table>
     </div>
-</div>
-
-<div id="mapholder" class="row mt-4">
-    <div class="col"></div>
-        <div class="col" id="map">
+    <div class="col" id="map">
         <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->
-        </div>
-
-    <div class="col"></div>
+    </div>
 </div>
+<partial name="_CarpoolSchedule"/>
 
   </body>
 </html>

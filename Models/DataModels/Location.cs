@@ -14,6 +14,7 @@ namespace SmartPool.Models
         public string City {get;set;}
         public string State {get;set;}
         public int Zip {get;set;}
+        public string Coords {get; set;}
 
         // Foreign Keys
         public int UserId {get;set;}

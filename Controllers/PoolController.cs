@@ -42,6 +42,41 @@ namespace SmartPool.Controllers
             dbContext = context;
         }
 
+        [HttpGet("test")]
+        public async Task<IActionResult> Test()
+        {
+            var origin = await HttpService.GetGeoCode("6907 150th Ave Ne Redmond WA");
+            if(origin[0] != "ERROR")
+            {
+                System.Console.WriteLine($"Lat: {origin[0]} Long: {origin[1]}");
+            }
+            else
+            {
+                System.Console.WriteLine("Invalid address");
+            }
+
+            var dest = await HttpService.GetGeoCode("Space Needle");
+            if(dest[0] != "ERROR")
+            {
+                System.Console.WriteLine($"Lat: {dest[0]} Long: {dest[1]}");
+            }
+            else
+            {
+                System.Console.WriteLine("Invalid address");
+            }
+
+            Dictionary<string, string> Package = new Dictionary<string, string>();
+            Package.Add("origin-lat", origin[0]);
+            Package.Add("origin-lng", origin[1]);
+
+            Package.Add("dest-lat", dest[0]);
+            Package.Add("dest-lng", dest[1]);
+
+            ViewBag.places = Package;
+
+            return View();
+        }
+
         [HttpGet("dashboard")]
         public IActionResult Dashboard()
         {
@@ -64,117 +99,137 @@ namespace SmartPool.Controllers
         }
 
         [HttpPost("/commute/create")]
-        // public IActionResult AddCommute(CommuteForm form)
-        // {
-        //     if(HttpContext.Session.Keys.Contains("LoggedInUserId"))
-        //     {
-        //         if(ModelState.IsValid)
-        //         {
-        //             User loggedIn = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+        public IActionResult AddCommute(CommuteForm form)
+        {
+            if(HttpContext.Session.Keys.Contains("LoggedInUserId"))
+            {
+                System.Console.WriteLine("VERIFYIED LOGIN");
+                if(ModelState.IsValid)
+                {
+                    System.Console.WriteLine("MODEL VALID");
+                    // User loggedIn = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
+
+                    System.Console.WriteLine(form.ArriveBy);
                     
-        //             if(form.Monday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Monday;
-        //                 newCommute.StartLocationId = form.StartPoint;
-        //                 newCommute.EndLocationId = form.EndPoint;
-        //                 newCommute.user = loggedIn;
+                    if(form.Monday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Monday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Tuesday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Tuesday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Tuesday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Tuesday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Wednesday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Wednesday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Wednesday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Wednesday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Thurday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Thursday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Thursday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Thursday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Friday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Friday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Friday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Friday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Saturday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Saturday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Saturday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Saturday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-        //             if(form.Sunday == true)
-        //             {
-        //                 Commute newCommute = new Commute();
-        //                 newCommute.ArriveBy = form.ArriveBy;
-        //                 newCommute.Day = DayOfWeek.Sunday;
-        //                 newCommute.StartPt = form.StartPt;
-        //                 newCommute.EndPt = form.EndPt;
-        //                 newCommute.user = loggedIn;
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    if(form.Sunday == true)
+                    {
+                        Commute newCommute = new Commute();
+                        newCommute.ArriveBy = form.ArriveBy;
+                        newCommute.Day = DayOfWeek.Sunday;
+                        newCommute.StartLocationId = form.StartLocationId;
+                        newCommute.EndLocationId = form.EndLocationId;
+                        newCommute.CarpoolId = form.CarpoolId;
 
-        //                 dbContext.Add(newCommute);
-        //                 dbContext.SaveChanges();
-        //             }
-
-        //             return RedirectToAction("Dashboard");
-        //         }
-        //         else
-        //         {
-        //             return View("AddCommute");
-        //         }
+                        dbContext.Add(newCommute);
+                        dbContext.SaveChanges();
+                    }
+                    System.Console.WriteLine("POSTED TO DB?????");
+                    return RedirectToAction("Dashboard");
+                }
+                else
+                {
+                    return View("AddCommute");
+                }
                 
-        //     }
-        //     else
-        //     {
-        //         return RedirectToAction("Index", "LoginReg");
-        //     }
-        // }
+            }
+            else
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+        }
 
         
 
 
-        [HttpGet("carpools")]
+        // [HttpGet("commutes/{id}")]
+        // public IActionResult Commutes()
+        // {
+        //     bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
+        //     if(idValid)
+        //     {
+        //         Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
+        //         return View(clickedCommute);
+        //     }
+        //     else
+        //     {
+        //         Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
+        //         return View(defaultCommute);
+        //     }
+        // }
+
+        [HttpGet("carpools/{id}")]
         public IActionResult Carpools()
         {
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
@@ -182,8 +237,30 @@ namespace SmartPool.Controllers
                 return RedirectToAction("Index", "LoginReg");
             }
 
-            return View();
+            List<Commute> AllCommutes = dbContext.Commutes.Where(c => c.Id!=null).Include(c => c.carpool).ThenInclude(c => c.user).Include(c => c.carpool).ThenInclude(c => c.riderships).ToList();
+            bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
+            if(idValid)
+            {
+                Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
+                ViewPools Data = new ViewPools()
+                {
+                    ClickedCommute = clickedCommute,
+                    AllCommutes = AllCommutes
+                };
+                return View(Data);
+            }
+            else
+            {
+                Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
+                ViewPools Data = new ViewPools()
+                {
+                    ClickedCommute = defaultCommute,
+                    AllCommutes = AllCommutes
+                };
+                return View(Data);
+            }
         }
+
 
         [HttpGet("carpool-details")]
         public IActionResult CarpoolDetails()
@@ -191,8 +268,7 @@ namespace SmartPool.Controllers
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
                 return RedirectToAction("Index", "LoginReg");
-            }
-
+            }    
             return View();
         }
 
@@ -240,7 +316,7 @@ namespace SmartPool.Controllers
         }
 
         [HttpPost("create-mylocation")]
-        public IActionResult CreateLocation(FormLocation form)
+        public async Task<IActionResult> CreateLocation(FormLocation form)
         {   
             if(ModelState.IsValid)
                 {
@@ -257,12 +333,31 @@ namespace SmartPool.Controllers
                     City = form.City,
                     State = form.State,
                     Zip = form.Zip,
-                    UserId = CurrentUser.Id
+                    UserId = CurrentUser.Id,
                 };
-                dbContext.Add(newLocation);
-                dbContext.SaveChanges();
-                return RedirectToAction("CreateCommute");
-            }
+
+                string fullAddress = newLocation.Address+"+"+newLocation.City+"+"+newLocation.State+"+"+newLocation.Zip;
+
+
+                var place = await HttpService.GetGeoCode(fullAddress);
+                if(place[0] != "ERROR")
+                {
+                    System.Console.WriteLine($"Lat: {place[0]} Long: {place[1]}");
+                    string coords = "{lat: "+place[0]+", lng: "+place[1]+"}";
+                    newLocation.Coords = coords;
+
+                    dbContext.Add(newLocation);
+                    dbContext.SaveChanges();
+                    return RedirectToAction("CreateCommute");
+                }
+                else
+                {
+                    System.Console.WriteLine("Invalid address");
+                    ModelState.AddModelError("Address", "Invalid Address");
+                    return View("MyLocations");
+                }
+                
+                }
             return View("MyLocations");
         }
             
@@ -331,18 +426,34 @@ namespace SmartPool.Controllers
         [HttpPost("create-carpool")]
         public IActionResult CreateCarpool(CreateCarpool form)
         {
-            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
-            Carpool newCarpool = new Carpool()
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
-                Name = form.Name,
-                UserId = logged_in_user.Id
-            };
+                return RedirectToAction("Index", "LoginReg");
+            }
 
-            dbContext.Add(newCarpool);
-            dbContext.SaveChanges();
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                    .Include(u => u.carpools)
+                                    .FirstOrDefault();
 
-            int createdCarpoolId = dbContext.Carpools.Last().Id;
-            return RedirectToAction("Carpool", new { id = createdCarpoolId});
+            if (ModelState.IsValid)
+            {
+                Carpool newCarpool = new Carpool()
+                {
+                    Name = form.Name,
+                    UserId = logged_in_user.Id
+                };
+
+                dbContext.Add(newCarpool);
+                dbContext.SaveChanges();
+
+                int createdCarpoolId = dbContext.Carpools.Last().Id;
+                return RedirectToAction("UpdateCarpool", new { id = createdCarpoolId});
+            }
+            else
+            {
+                ViewBag.logged_in_user = logged_in_user;
+                return View("Dashboard");
+            }
         }
 
         [HttpGet("carpool/{id}")]
