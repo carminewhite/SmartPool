@@ -42,6 +42,41 @@ namespace SmartPool.Controllers
             dbContext = context;
         }
 
+        [HttpGet("test")]
+        public async Task<IActionResult> Test()
+        {
+            var origin = await HttpService.GetGeoCode("6907 150th Ave Ne Redmond WA");
+            if(origin[0] != "ERROR")
+            {
+                System.Console.WriteLine($"Lat: {origin[0]} Long: {origin[1]}");
+            }
+            else
+            {
+                System.Console.WriteLine("Invalid address");
+            }
+
+            var dest = await HttpService.GetGeoCode("Space Needle");
+            if(dest[0] != "ERROR")
+            {
+                System.Console.WriteLine($"Lat: {dest[0]} Long: {dest[1]}");
+            }
+            else
+            {
+                System.Console.WriteLine("Invalid address");
+            }
+
+            Dictionary<string, string> Package = new Dictionary<string, string>();
+            Package.Add("origin-lat", origin[0]);
+            Package.Add("origin-lng", origin[1]);
+
+            Package.Add("dest-lat", dest[0]);
+            Package.Add("dest-lng", dest[1]);
+
+            ViewBag.places = Package;
+
+            return View();
+        }
+
         [HttpGet("dashboard")]
         public IActionResult Dashboard()
         {
