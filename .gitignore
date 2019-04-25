@@ -18,9 +18,9 @@ appsettings.json
 UpgradeLog.XML _UpgradeReport_Files/ 
 ############### # Directories # ############### 
 bin/ 
+Migrations/
 obj/ 
 TestResults/ 
-Migrations/
 ################### # Web publish log # ################### 
 *.Publish.xml 
 ############# # Resharper # ############# 

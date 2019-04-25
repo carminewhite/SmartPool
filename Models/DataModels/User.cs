@@ -15,6 +15,9 @@ namespace SmartPool.Models
         public string PwHash {get; set;}
         public string Phone {get; set;}
 
-        public List<Commute> Commutes {get; set;}
+        // Navigation Properties
+        public List<Carpool> carpools {get; set;}
+        public List<Ridership> riderships {get; set;}
+        public List<Location> locations {get; set;}
     }
 }
