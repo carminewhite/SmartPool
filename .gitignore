@@ -21,7 +21,6 @@ bin/
 Migrations/
 obj/ 
 TestResults/ 
-Migrations/
 ################### # Web publish log # ################### 
 *.Publish.xml 
 ############# # Resharper # ############# 

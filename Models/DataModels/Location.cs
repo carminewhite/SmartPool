@@ -14,7 +14,13 @@ namespace SmartPool.Models
         public string City {get;set;}
         public string State {get;set;}
         public int Zip {get;set;}
-        public int UserID {get;set;}
-        public User User {get;set;}
+
+        // Foreign Keys
+        public int UserId {get;set;}
+
+        // Navigation Properties
+        public User user {get;set;}
+        public List<Commute> commutesStartingHere {get; set;}
+        public List<Commute> commutesEndingHere {get; set;}
     }
 }
