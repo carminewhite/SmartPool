@@ -2,15 +2,16 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SmartPool.Models;
 
 namespace SmartPool.Migrations
 {
     [DbContext(typeof(PoolContext))]
-    partial class PoolContextModelSnapshot : ModelSnapshot
+    [Migration("20190424213926_RemovedProfileView")]
+    partial class RemovedProfileView
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,34 +64,6 @@ namespace SmartPool.Migrations
                     b.ToTable("Commutes");
                 });
 
-            modelBuilder.Entity("SmartPool.Models.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("City");
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<string>("LocationNickname");
-
-                    b.Property<string>("State");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<int>("UserID");
-
-                    b.Property<int>("Zip");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Locations");
-                });
-
             modelBuilder.Entity("SmartPool.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -124,14 +97,6 @@ namespace SmartPool.Migrations
                     b.HasOne("SmartPool.Models.User", "user")
                         .WithMany("Commutes")
                         .HasForeignKey("userId");
-                });
-
-            modelBuilder.Entity("SmartPool.Models.Location", b =>
-                {
-                    b.HasOne("SmartPool.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

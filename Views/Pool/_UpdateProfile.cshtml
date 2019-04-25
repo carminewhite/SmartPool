@@ -1,0 +1,62 @@
+@model UpdateUser
+<div class="col-12">
+    <div class="justify-content-center row">
+        <h3 class="mb-3">Edit Profile</h3>
+    </div>
+    <form asp-action="ProfileUpdate" asp-controller="Pool" method="POST">
+        <div class="row justify-content-center">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="FirstName" style="min-width: 160px;">First Name</label>
+            </div>
+            <input type="text" class="form-control" asp-for="FirstName" style="max-width: 300px;" value="@ViewBag.user.FirstName">
+        </div>
+
+        <div class="row justify-content-center">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="LastName" style="min-width: 160px;">Last Name</label>
+            </div>
+            <input type="text" class="form-control" asp-for="LastName" style="max-width: 300px;" value="@ViewBag.user.LastName">
+        </div>
+
+        <div class="row justify-content-center">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Email" style="min-width: 160px;">Email</label>
+            </div>
+            <input type="text" class="form-control" asp-for="Email" style="max-width: 300px;" value="@ViewBag.user.Email">
+        </div>
+
+        <div class="row justify-content-center">
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Phone" style="min-width: 160px;">Phone Number</label>
+            </div>
+            <input type="text" class="form-control" asp-for="Phone" style="max-width: 300px;" value="@ViewBag.user.Phone">
+        </div>
+
+        <div class="row justify-content-center">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3 justify-content-center">
+            <div class="input-group-prepend">
+                <label class="input-group-text justify-content-center" asp-for="Password" style="min-width: 160px;">Current Password</label>
+            </div>
+            <input type="password" class="form-control" asp-for="Password" style="max-width: 300px;">
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <a href="/dashboard" class="mr-5 mt-1">Go Back</a>
+            <input type="submit" class="btn btn-outline-success" style="min-width: 160px;" value="Update Profile">
+        </div>
+    </form>
+</div>
