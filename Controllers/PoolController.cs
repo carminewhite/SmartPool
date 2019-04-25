@@ -210,25 +210,6 @@ namespace SmartPool.Controllers
             }
         }
 
-        
-
-
-        // [HttpGet("commutes/{id}")]
-        // public IActionResult Commutes()
-        // {
-        //     bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
-        //     if(idValid)
-        //     {
-        //         Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
-        //         return View(clickedCommute);
-        //     }
-        //     else
-        //     {
-        //         Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
-        //         return View(defaultCommute);
-        //     }
-        // }
-
         [HttpGet("carpools/{id}")]
         public IActionResult Carpools()
         {
@@ -257,7 +238,7 @@ namespace SmartPool.Controllers
                     ClickedCommute = defaultCommute,
                     AllCommutes = AllCommutes
                 };
-               
+                
                 return View(Data);
             }
         }
@@ -387,19 +368,6 @@ namespace SmartPool.Controllers
                 return View("Profile");
             }
         }
-
-        // [HttpPost("create-new-commute")]
-        // public IActionResult CreateNewCommute(FormCommute form)
-        // {
-        //     if(ModelState.IsValid)
-        //     {
-        //         User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
-        //         if(CurrentUser == null)
-        //         {
-        //             return Redirect("/logout");
-        //         }
-
-        // }
 
         [HttpPost("create-carpool")]
         public IActionResult CreateCarpool(CreateCarpool form)
