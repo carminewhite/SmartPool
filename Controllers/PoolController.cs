@@ -213,12 +213,6 @@ namespace SmartPool.Controllers
         [HttpGet("commutes/{id}")]
         public IActionResult Commutes()
         {
-            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
-            {
-                return RedirectToAction("Index", "LoginReg");
-            }
-
-
             bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
             if(idValid)
             {
@@ -235,6 +229,28 @@ namespace SmartPool.Controllers
             // Dictionary<string, string> Package = new Dictionary<string, string>();
             // Package.Add("origin-lat", origin[0]);
             // Package.Add("origin-lng", origin[1]);
+        }
+
+        [HttpGet("carpools")]
+        public IActionResult Carpools()
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            return View();
+        }
+
+
+        [HttpGet("carpool-details")]
+        public IActionResult CarpoolDetails()
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }    
+            return View();
         }
 
         [HttpGet("profile")]
