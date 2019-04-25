@@ -219,7 +219,11 @@ namespace SmartPool.Controllers
                     City = form.City,
                     State = form.State,
                     Zip = form.Zip,
+<<<<<<< HEAD
                     UserID = CurrentUser.Id
+=======
+                    UserId = CurrentUser.Id
+>>>>>>> 515cf0b4be585ec6a23e142d9f3bf3739bfb4429
                 };
                 dbContext.Add(newLocation);
                 dbContext.SaveChanges();
