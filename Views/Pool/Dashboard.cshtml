@@ -1,4 +1,4 @@
-@model User
+@model DashboardView
 <div class="row">
     <div class="col">
         <h2 class="ml-3">SmartPool</h2>
@@ -9,20 +9,39 @@
     </div>
 </div>
 <hr>
-<div class="col-12 justify-content-center">
-    <div class="row justify-content-center">
-        <h4>Welcome, @Model.FirstName!</h5>
-    </div>
-    <div class="row justify-content-center">
-        <a href="/profile" class="p-3 text-center d-block mt-4 btn btn-secondary" style="min-width: 330px;">My Profile</a>
-    </div>
-    <div class="row justify-content-center">
-        <a href="/my_schedule" class="p-3 text-center d-block mt-2 btn btn-info" style="min-width: 330px;">My Schedule</a>
-    </div>
-    <div class="row justify-content-center">
-        <a href="/create-commute" class="p-3 text-center d-block mt-2 btn btn-primary" style="min-width: 330px;">Create a New Carpool</a>
+<div class="row justify-content-center">
+    <h3>Welcome, @ViewBag.logged_in_user.FirstName!</h3>
+</div>
+<div class="row">
+    <div class="col-md-6 justify-content-center">
+        <div class="row justify-content-center">
+            <a href="/profile" class="p-3 text-center d-block mt-4 btn btn-secondary" style="min-width: 330px;">My Profile</a>
+        </div>
+        <div class="row justify-content-center">
+            <a href="/my_schedule" class="p-3 text-center d-block mt-2 btn btn-info" style="min-width: 330px;">My Schedule</a>
+        </div>
+        <div class="row justify-content-center">
+            <a href="/create-commute" class="p-3 text-center d-block mt-2 btn btn-primary" style="min-width: 330px;">Create a Commute</a>
+        </div>
+        <div class="row justify-content-center">
+            <a href="/carpools" class="p-3 text-center d-block mt-2 btn btn-success" style="min-width: 330px;">View/Join Carpools</a>
+        </div>
+        @if (!(@ViewBag.logged_in_user.carpools is null))
+        {
+            @foreach (Carpool carpool in @ViewBag.logged_in_user.carpools)
+            {
+                <div class="row justify-content-center">
+                    <a href="/carpool/@carpool.Id" class="p-3 text-center d-block mt-2 btn btn-warning" style="min-width: 330px;">View My Carpool: @carpool.Name</a>
+                </div>
+            }
+        }
     </div>
     <div class="row justify-content-center">
         <a href="/carpools/default" class="p-3 text-center d-block mt-2 btn btn-success" style="min-width: 330px;">View/Join Carpools</a>
+
+    <div class="col-md-6 justify-content-center">
+        
+
+        <partial name="_NewCarpoolForm"/>
     </div>
 </div>
