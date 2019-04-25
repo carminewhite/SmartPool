@@ -10,4 +10,6 @@ using SmartPool.Models;
             public DbSet<User> Users {get;set;}
             public DbSet<Commute> Commutes {get;set;}
             public DbSet<Carpool> Carpools {get;set;}
+            public DbSet<Location> Locations {get;set;}
+
     }

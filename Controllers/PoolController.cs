@@ -230,6 +230,50 @@ namespace SmartPool.Controllers
             return View();
         }
 
+        [HttpGet("mylocations")]
+        public IActionResult MyLocations()
+        {
+            return View();
+        }
+
+        [HttpPost("create-mylocation")]
+        public IActionResult CreateLocation(FormLocation form)
+        {   
+            if(ModelState.IsValid)
+                {
+                User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
+                if(CurrentUser == null)
+                {
+                    return Redirect("/logout");
+                }
+
+                Location newLocation = new Location()
+                {
+                    LocationNickname = form.LocationNickname,
+                    Address = form.Address,
+                    City = form.City,
+                    State = form.State,
+                    Zip = form.Zip,
+                    UserID = CurrentUser.Id
+                };
+                dbContext.Add(newLocation);
+                dbContext.SaveChanges();
+                return RedirectToAction("CreateCommute");
+            }
+            return View("MyLocations");
+        }
+            
+        [HttpGet("create-commute")]
+        public IActionResult CreateCommute()
+        {
+
+            List<Location> allLocations = dbContext.Locations
+                .OrderByDescending(u => u.CreatedAt)
+                .ToList();
+            ViewBag.ListofLocations = allLocations;
+            return View();
+            
+        }
         [HttpPost("profile/update")]
         public IActionResult ProfileUpdate(UpdateUser form)
         {
@@ -267,6 +311,19 @@ namespace SmartPool.Controllers
             }
         }
     }
+
+        // [HttpPost("create-new-commute")]
+        // public IActionResult CreateNewCommute(FormCommute form)
+        // {
+        //     if(ModelState.IsValid)
+        //     {
+        //         User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
+        //         if(CurrentUser == null)
+        //         {
+        //             return Redirect("/logout");
+        //         }
+
+        // }
 
     
 
