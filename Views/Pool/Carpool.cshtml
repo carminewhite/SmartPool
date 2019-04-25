@@ -1,45 +1,56 @@
 @model Carpool
 <partial name="_Nav"/>
 <hr>
-<h3>@Model.Name</h3>
-<div class="row mt-4">
-    <div>
-        <img class="d-inline" src="https://via.placeholder.com/150">
-        <img class="d-inline" src="https://via.placeholder.com/150">
-        <img class="d-inline" src="https://via.placeholder.com/150">
-        <img class="d-inline" src="https://via.placeholder.com/150">
-        <a href="" class="ml-4 btn btn-success p-3">Request to Join</a>
+<div class="row">
+    <div class="col">
+        <h4 class="d-block bg-success p-3 text-light text-center rounded">Carpool Details</h4>
+        <h3 class="mt-4">Carpool Name: @Model.Name</h3>
+        <p><span class="font-weight-bold">Description:</span>@Model.Description</p>
+        <div class="mt-4">
+            <a href="" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
+            <a href="" class="mb-0 d-inline btn btn-info p-3">Contact Pool Creator</a>
+        @if (@Model.UserId == @ViewBag.logged_in_user.Id)
+        {
+            <a href="/update/carpool/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
+        }
+        </div>
     </div>
 </div>
 <div class="row mt-4">
-    <h4>Full Carpool Schedule</h4>
-        <table class="mt-4 table table-bordered">
-        <tbody>
-            <tr>
-                <td scope="col-3">Mon</td>
-                <td scope="col-3">8:00AM</td>
-                <td scope="col-3"><a href="">Lynnwood Park and Ride to Bellefield Office Park</a></td>
-            </tr>
-            <tr>
-                <td scope="col-3">Tues</td>
-                <td scope="col-3">8:00AM</td>
-                <td scope="col-3"><a href="">Lynnwood Park and Ride to Bellefield Office Park</a></td>
-            </tr>
-            <tr>
-                <td scope="col-3">Wed</td>
-                <td scope="col-3">9:00AM</td>
-                <td scope="col-3"><a href="">Lynnwood Park and Ride to Downtown Seattle</a></td>
-            </tr>
-            <tr>
-                <td scope="col-3">Mon</td>
-                <td scope="col-3">8:00AM</td>
-                <td scope="col-3"><a href="">Lynnwood Park and Ride to Bellefield Office Park</a></td>
-            </tr>
-            <tr>
-                <td scope="col-3">Mon</td>
-                <td scope="col-3">10:00AM</td>
-                <td scope="col-3"><a href="">Lynnwood Park and Ride to Redmond 24hr Fitness</a></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col">
+        <div class="mt-4">
+            <p>Riders in this pool:</p>
+            <div class="row">
+                @foreach (Ridership ridership in @Model.riderships)
+                {
+                    <div class="col">
+                        <img class="d-inline" src="https://via.placeholder.com/150">
+                        <p>@ridership.user.FirstName @ridership.user.LastName</p>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="mt-4">
+            <p>Pool schedule:</p>
+            <table class="mt-4 table table-bordered">
+                <thead>
+                    <th scope="col-2">Day</th>
+                    <th scope="col-2">Arrive By</th>
+                    <th scope="col-2">Destination</th>
+                    <th scope="col-2">Destination City</th>
+                </thead>
+                <tbody>
+                    @foreach (Commute commute in @Model.commutes)
+                    {
+                        <tr>
+                            <td scope="col-3">@commute.Day</td>
+                            <td scope="col-3">@commute.ArriveBy</td>
+                            <td scope="col-3">@commute.endLocation.LocationNickname</td>
+                            <td scope="col-3">@commute.endLocation.City</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

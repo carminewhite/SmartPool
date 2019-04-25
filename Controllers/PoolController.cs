@@ -309,18 +309,34 @@ namespace SmartPool.Controllers
         [HttpPost("create-carpool")]
         public IActionResult CreateCarpool(CreateCarpool form)
         {
-            User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
-            Carpool newCarpool = new Carpool()
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
-                Name = form.Name,
-                UserId = logged_in_user.Id
-            };
+                return RedirectToAction("Index", "LoginReg");
+            }
 
-            dbContext.Add(newCarpool);
-            dbContext.SaveChanges();
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                    .Include(u => u.carpools)
+                                    .FirstOrDefault();
 
-            int createdCarpoolId = dbContext.Carpools.Last().Id;
-            return RedirectToAction("Carpool", new { id = createdCarpoolId});
+            if (ModelState.IsValid)
+            {
+                Carpool newCarpool = new Carpool()
+                {
+                    Name = form.Name,
+                    UserId = logged_in_user.Id
+                };
+
+                dbContext.Add(newCarpool);
+                dbContext.SaveChanges();
+
+                int createdCarpoolId = dbContext.Carpools.Last().Id;
+                return RedirectToAction("UpdateCarpool", new { id = createdCarpoolId});
+            }
+            else
+            {
+                ViewBag.logged_in_user = logged_in_user;
+                return View("Dashboard");
+            }
         }
 
         [HttpGet("carpool/{id}")]
