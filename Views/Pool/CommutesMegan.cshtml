@@ -1,6 +1,7 @@
 @{
     Layout = null;
 }
+@model Commute
 
 <html>
   <head>
@@ -40,9 +41,7 @@
     </style>
   </head>
   <body>
-    <!-- <div id="map"></div>
-    &nbsp;
-    <div id="warnings-panel"></div> -->
+
     <script>
       function initMap() {
         var markerArray = [];
@@ -53,7 +52,7 @@
         // Create a map and center it on Manhattan.
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: {lat: @ViewBag.places["origin-lat"], lng: @ViewBag.places["origin-lng"]}
+          center: @Model.startLocation.Coords
         });
 
         // Create a renderer for directions and bind it to the map.
@@ -66,12 +65,6 @@
         calculateAndDisplayRoute(
             directionsDisplay, directionsService, markerArray, stepDisplay, map);
         // Listen to change events from the start and end lists.
-        var onChangeHandler = function() {
-          calculateAndDisplayRoute(
-              directionsDisplay, directionsService, markerArray, stepDisplay, map);
-        };
-        document.getElementById('start').addEventListener('change', onChangeHandler);
-        document.getElementById('end').addEventListener('change', onChangeHandler);
       }
 
       function calculateAndDisplayRoute(directionsDisplay, directionsService,
@@ -84,15 +77,13 @@
         // Retrieve the start and end locations and create a DirectionsRequest using
         // WALKING directions.
         directionsService.route({
-          origin: document.getElementById('start').value,
-          destination: {lat: @ViewBag.places["dest-lat"], lng: @ViewBag.places["dest-lng"]},
-          travelMode: 'WALKING'
+          origin: @Model.startLocation.Coords,
+          destination: @Model.endLocation.Coords,
+          travelMode: 'DRIVING'
         }, function(response, status) {
           // Route the directions and pass the response to a function to create
           // markers for each step.
           if (status === 'OK') {
-            document.getElementById('warnings-panel').innerHTML =
-                '<b>' + response.routes[0].warnings + '</b>';
             directionsDisplay.setDirections(response);
             showSteps(response, markerArray, stepDisplay, map);
           } else {
@@ -106,13 +97,13 @@
         // Also attach the marker to an array so we can keep track of it and remove it
         // when calculating new routes.
         var myRoute = directionResult.routes[0].legs[0];
-        for (var i = 0; i < myRoute.steps.length; i++) {
+        /* for (var i = 0; i < myRoute.steps.length; i++) {
           var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
           marker.setMap(map);
           marker.setPosition(myRoute.steps[i].start_location);
           attachInstructionText(
               stepDisplay, marker, myRoute.steps[i].instructions, map);
-        }
+        } */
       }
 
       function attachInstructionText(stepDisplay, marker, text, map) {
@@ -141,31 +132,29 @@
                     <th scope="col-3">Arrival</th>
                     <th scope="col-3">Start Point</th>
                     <th scope="col-3">End Point</th>
-                    <select id="start" hidden>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td scope="col-3">Mon</td>
+                    <td scope="col-3">Thurs</td>
                     <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
+                    <td scope="col-3">Bellevue</td>
                     <td scope="col-3"><a href="">Seattle</a></td>
-                    
-                    <td><option value='{"lat": 47.621855280291513,"lng": -122.3479284197085}'>Show</option></td>
+                    <td><a href="/commutes/10">Show</a></td>
+                </tr>
+                <tr>
+                    <td scope="col-3">Tues</td>
+                    <td scope="col-3">8:00AM</td>
+                    <td scope="col-3">Bellevue</td>
+                    <td scope="col-3"><a href="">Seattle</a></td>
+                    <td><a href="/commutes/8">Show</a></td>
                 </tr>
                 <tr>
                     <td scope="col-3">Mon</td>
                     <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
+                    <td scope="col-3">Bellevue</td>
                     <td scope="col-3"><a href="">Seattle</a></td>
-                    <td>Show</td>
-                </tr>
-                <tr>
-                    <td scope="col-3">Mon</td>
-                    <td scope="col-3">8:00AM</td>
-                    <td scope="col-3"><a href="">Bellevue</a></td>
-                    <td scope="col-3"><a href="">Seattle</a></td>
-                    <td>Show</td>
+                    <td><a href="/commutes/9">Show</a></td>
                 </tr>
                 <tr>
                     <td scope="col-3">Mon</td>
@@ -176,7 +165,6 @@
                 </tr>
             </tbody>
         </table>
-        </select>
     </div>
     <div class="col" id="map">
         <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->

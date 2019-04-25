@@ -26,6 +26,8 @@ namespace SmartPool.Models
         [InverseProperty("commutesEndingHere")]
         public Location endLocation {get; set;}
 
+        [ForeignKey("CarpoolId")]
+        [InverseProperty("commutes")]
         public Carpool carpool {get; set;}
     }
 }
