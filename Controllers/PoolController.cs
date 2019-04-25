@@ -192,6 +192,17 @@ namespace SmartPool.Controllers
 
             return View();
         }
+
+        [HttpGet("edit-carpool")]
+        public IActionResult EditCarpool()
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            return View();
+        }
         
 
         [HttpGet("profile")]
