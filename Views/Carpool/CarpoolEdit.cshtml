@@ -47,7 +47,7 @@
                 @foreach (Ridership ridership in @Model.riderships)
                 {
                     <div class="col">
-                        <img class="d-inline" src="https://via.placeholder.com/150">
+                        <img class="d-inline" src="~/images/UserPlaceholder.jpg" style="height: 120px; width: 120px;">
                         <p>@ridership.user.FirstName @ridership.user.LastName</p>
                         <a href="/ridership/kick/@ridership.user.Id/@Model.Id" class="btn-sm btn-danger">Kick Rider</a>
                     </div>

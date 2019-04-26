@@ -144,14 +144,14 @@
                 <p class="font-weight-bold">Riders in this pool:</p>
                 <div class="row">
                     <div class="col">
-                            <img class="d-inline" src="https://via.placeholder.com/150">
+                            <img class="d-inline" src="~/images/UserPlaceholder.jpg" style="height: 120px; width: 120px;">
                             <p class="mb-0">@Model.user.FirstName @Model.user.LastName</p>
                             <p>(Creator of this carpool)</p>
                     </div>
                     @foreach (Ridership ridership in @Model.riderships)
                     {
                         <div class="col">
-                            <img class="d-inline" src="https://via.placeholder.com/150">
+                            <img class="d-inline" src="~/images/UserPlaceholder.jpg" style="height: 120px; width: 120px;">
                             <p>@ridership.user.FirstName @ridership.user.LastName</p>
                         </div>
                     }
