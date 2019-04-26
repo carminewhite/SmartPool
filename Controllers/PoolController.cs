@@ -91,12 +91,26 @@ namespace SmartPool.Controllers
             ViewBag.logged_in_user = logged_in_user;
             return View();
         }
-
-        [HttpGet("/commute/create")]
-        public IActionResult CommuteForm()
+            
+        [HttpGet("create/commute/{carpoolid}")]
+        public IActionResult CreateCommute(int carpoolid)
         {
+
+            List<Location> allLocations = dbContext.Locations
+                .OrderByDescending(u => u.CreatedAt)
+                .ToList();
+            ViewBag.ListofLocations = allLocations;
+            ViewBag.carpoolid = carpoolid;
             return View();
+            
         }
+
+        // [HttpGet("/commute/create")]
+        // public IActionResult CommuteForm()
+        // {
+
+        //     return View();
+        // }
 
         [HttpPost("/commute/create")]
         public IActionResult AddCommute(CommuteForm form)
@@ -196,7 +210,8 @@ namespace SmartPool.Controllers
                         dbContext.SaveChanges();
                     }
                     System.Console.WriteLine("POSTED TO DB?????");
-                    return RedirectToAction("Dashboard");
+                    return RedirectToAction("UpdateCarpool", new {id = form.CarpoolId});
+
                 }
                 else
                 {
@@ -237,11 +252,17 @@ namespace SmartPool.Controllers
                 return RedirectToAction("Index", "LoginReg");
             }
 
-            List<Commute> AllCommutes = dbContext.Commutes.Where(c => c.Id!=null).Include(c => c.carpool).ThenInclude(c => c.user).Include(c => c.carpool).ThenInclude(c => c.riderships).ToList();
+            List<Commute> AllCommutes = dbContext.Commutes
+                .Where(c => c.Id!=null).Include(c => c.carpool)
+                .ThenInclude(c => c.user).Include(c => c.carpool)
+                .ThenInclude(c => c.riderships).ToList();
             bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
             if(idValid)
             {
-                Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
+                Commute clickedCommute = dbContext.Commutes
+                    .Include(c => c.startLocation)
+                    .Include(c => c.endLocation)
+                    .FirstOrDefault(c => c.Id == comId);
                 ViewPools Data = new ViewPools()
                 {
                     ClickedCommute = clickedCommute,
@@ -251,7 +272,10 @@ namespace SmartPool.Controllers
             }
             else
             {
-                Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
+                Commute defaultCommute = dbContext.Commutes
+                    .Include(c => c.startLocation)
+                    .Include(c => c.endLocation)
+                    .Where(c => c.Id != null).FirstOrDefault();
                 ViewPools Data = new ViewPools()
                 {
                     ClickedCommute = defaultCommute,
@@ -261,6 +285,22 @@ namespace SmartPool.Controllers
             }
         }
 
+        [HttpGet("delete/commutes/{id}")]
+        public IActionResult DeleteCommute(int id)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            Commute thisCommute = dbContext.Commutes
+                .Where(u => u.Id == id)
+                .FirstOrDefault();
+            dbContext.Remove(thisCommute);
+            dbContext.SaveChanges();
+            int carpoolId = thisCommute.CarpoolId;
+            return RedirectToAction("UpdateCarpool", new { id = carpoolId });
+        }
 
         [HttpGet("carpool-details")]
         public IActionResult CarpoolDetails()
@@ -293,6 +333,7 @@ namespace SmartPool.Controllers
             ViewBag.logged_in_user = logged_in_user;
             return View(carpool);
         }
+
 
 
         [HttpGet("profile")]
@@ -360,18 +401,7 @@ namespace SmartPool.Controllers
                 }
             return View("MyLocations");
         }
-            
-        [HttpGet("create-commute")]
-        public IActionResult CreateCommute()
-        {
 
-            List<Location> allLocations = dbContext.Locations
-                .OrderByDescending(u => u.CreatedAt)
-                .ToList();
-            ViewBag.ListofLocations = allLocations;
-            return View();
-            
-        }
 
         [HttpPost("profile/update")]
         public IActionResult ProfileUpdate(UpdateUser form)
