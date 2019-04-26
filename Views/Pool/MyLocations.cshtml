@@ -9,24 +9,29 @@
         <form asp-action="CreateLocation" method="post" asp-controller="Pool">
             <h3>Add a new Location</h3>
             <div class="form-group">
+                <span asp-validation-for="LocationNickname"></span>
                 <label asp-for="LocationNickname">Destination Nickname:</label>
                 <input asp-for="LocationNickname" class="form-control" placeholder="ex: Work, my baby mama's house, etc...">
             </div>
             <div class="form-group">
+                <span asp-validation-for="Address"></span>
                 <label asp-for="Address"></label>
                 <input asp-for="Address" class="form-control" placeholder="ex: 123 Main St.">
                 <small asp-for="addresshelp" class="form-text text-muted">Doesn't have to be exact</small>
             </div>
             <div class="form-row">
-                <div class="col-6"
+                <div class="col-6">
+                    <span asp-validation-for="City"></span>
                     <label asp-for="City"></label>
                     <input asp-for="City" class="form-control">
                 </div>
-                <div class="col-3"
+                <div class="col-3">
+                    <span asp-validation-for="State"></span>
                     <label asp-for="State"></label>
                     <input asp-for="State" class="form-control">
                 </div>
-                <div class="col-3"
+                <div class="col-3">
+                    <span asp-validation-for="Zip"></span>
                     <label asp-for="Zip"></label>
                     <input type="text" asp-for="Zip" class="form-control">
                 </div>

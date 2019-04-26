@@ -97,6 +97,7 @@ namespace SmartPool.Controllers
         [HttpGet("create/commute/{carpoolid}")]
         public IActionResult CreateCommute(int carpoolid)
         {
+            HttpContext.Session.SetInt32("cpId", carpoolid);
 
             List<Location> allLocations = dbContext.Locations
                 .OrderByDescending(u => u.CreatedAt)
@@ -119,7 +120,7 @@ namespace SmartPool.Controllers
         {
             if(HttpContext.Session.Keys.Contains("LoggedInUserId"))
             {
-                System.Console.WriteLine("VERIFYIED LOGIN");
+                System.Console.WriteLine("VERIFIED LOGIN");
                 if(ModelState.IsValid)
                 {
                     System.Console.WriteLine("MODEL VALID");
@@ -228,7 +229,7 @@ namespace SmartPool.Controllers
         }
 
         [HttpGet("carpools/{id}")]
-        public IActionResult Carpools()
+        public IActionResult Carpools(int id)
         {
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
@@ -236,8 +237,9 @@ namespace SmartPool.Controllers
             }
 
             List<Commute> AllCommutes = dbContext.Commutes
-                .Where(c => c.Id!=null).Include(c => c.carpool)
-                .ThenInclude(c => c.user).Include(c => c.carpool)
+                .Include(c => c.carpool)
+                .ThenInclude(c => c.user)
+                .Include(c => c.carpool)
                 .ThenInclude(c => c.riderships).ToList();
             bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
             if(idValid)
@@ -258,7 +260,7 @@ namespace SmartPool.Controllers
                 Commute defaultCommute = dbContext.Commutes
                     .Include(c => c.startLocation)
                     .Include(c => c.endLocation)
-                    .Where(c => c.Id != null).FirstOrDefault();
+                    .FirstOrDefault();
                 ViewPools Data = new ViewPools()
                 {
                     ClickedCommute = defaultCommute,
@@ -299,6 +301,7 @@ namespace SmartPool.Controllers
         [HttpGet("update/carpool/{id}")]
         public IActionResult UpdateCarpool(int id)
         {
+            HttpContext.Session.SetInt32("cpId", id);
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
             {
                 return RedirectToAction("Index", "LoginReg");
@@ -342,14 +345,14 @@ namespace SmartPool.Controllers
         [HttpPost("create-mylocation")]
         public async Task<IActionResult> CreateLocation(FormLocation form)
         {   
-            if(ModelState.IsValid)
-                {
-                User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
-                if(CurrentUser == null)
-                {
-                    return Redirect("/logout");
-                }
+            User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
+            if(CurrentUser == null)
+            {
+                return Redirect("/logout");
+            }
 
+            if(ModelState.IsValid)
+            {
                 Location newLocation = new Location()
                 {
                     LocationNickname = form.LocationNickname,
@@ -372,7 +375,7 @@ namespace SmartPool.Controllers
 
                     dbContext.Add(newLocation);
                     dbContext.SaveChanges();
-                    return RedirectToAction("CreateCommute");
+                    return Redirect($"/create/commute/{HttpContext.Session.GetInt32("cpId")}");
                 }
                 else
                 {
@@ -381,7 +384,7 @@ namespace SmartPool.Controllers
                     return View("MyLocations");
                 }
                 
-                }
+            }
             return View("MyLocations");
         }
 
@@ -433,6 +436,8 @@ namespace SmartPool.Controllers
 
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                     .Include(u => u.carpools)
+                                    .Include(u => u.riderships)
+                                    .ThenInclude(r => r.carpool)
                                     .FirstOrDefault();
 
             if (ModelState.IsValid)
@@ -491,6 +496,8 @@ namespace SmartPool.Controllers
 
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                             .Include(u => u.carpools)
+                                            .Include(u => u.riderships)
+                                            .ThenInclude(r => r.carpool)
                                             .FirstOrDefault();
             if (carpoolToRemove is null)
             {
@@ -537,6 +544,8 @@ namespace SmartPool.Controllers
             }
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                             .Include(u => u.carpools)
+                                            .Include(u => u.riderships)
+                                            .ThenInclude(r => r.carpool)
                                             .FirstOrDefault();
             ViewBag.logged_in_user = logged_in_user;
             ModelState.AddModelError("Error", "Cannot join ridership for another user");
@@ -552,6 +561,8 @@ namespace SmartPool.Controllers
 
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                         .Include(u => u.carpools)
+                                        .Include(u => u.riderships)
+                                        .ThenInclude(r => r.carpool)
                                         .FirstOrDefault();
             
             if (HttpContext.Session.GetInt32("LoggedInUserId") == userid)
