@@ -18,6 +18,7 @@ namespace SmartPool.Models
 
         [Required]
         public string State {get;set;}
+        public int cpId {get; set;}
 
         [Required]
         [Range(10000,99999, ErrorMessage="Must be 5 characters")]

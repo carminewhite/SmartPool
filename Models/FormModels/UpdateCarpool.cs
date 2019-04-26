@@ -5,11 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartPool.Models
 {
-    public class Carpool : DataModel
+    public class UpdateCarpool : DataModel
     {
-        [Key]
-        public int Id {get; set;}
+        [Required]
         public string Name {get; set;}
+
+        [Required]
         public string Description {get; set;} = null;
 
         // Foreign Keys

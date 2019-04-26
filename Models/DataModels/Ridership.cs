@@ -5,19 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartPool.Models
 {
-    public class Carpool : DataModel
+    public class Ridership : DataModel
     {
         [Key]
         public int Id {get; set;}
-        public string Name {get; set;}
-        public string Description {get; set;} = null;
 
         // Foreign Keys
         public int UserId {get; set;}
+        public int CarpoolId {get; set;}
 
         // Navigation Properties
         public User user {get; set;}
-        public List<Commute> commutes {get; set;}
-        public List<Ridership> riderships {get; set;}
+        public Carpool carpool {get; set;}
     }
 }

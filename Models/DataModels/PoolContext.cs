@@ -11,5 +11,6 @@ using SmartPool.Models;
             public DbSet<Commute> Commutes {get;set;}
             public DbSet<Carpool> Carpools {get;set;}
             public DbSet<Location> Locations {get;set;}
+            public DbSet<Ridership> Riderships {get;set;}
 
     }

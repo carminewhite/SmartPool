@@ -1,13 +1,15 @@
+@model CommuteForm
 <partial name="_Nav"/>
 <hr>
-<div class="row">
+<h4 class="d-block bg-primary p-3 text-light text-center rounded">Create a New Commute</h4>
+<div class="row mt-4">
     <div class="col"></div>
     <div class="col-8">
-        <form method="post" controller="Pool">
+        <form method="post" asp-controller="Pool" asp-action="AddCommute">
             <div class="form-row">
                 <div class="form-group col-4">
                     <label class="d-block" for="StartPoint">Start Point:</label>
-                    <select id="StartPoint">
+                    <select asp-for="StartLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
                         {
@@ -17,7 +19,7 @@
                 </div>
                 <div class="form-group col-4">
                     <label class="d-block" for="EndPoint">Destination:</label>
-                    <select id="EndPoint">
+                    <select asp-for="EndLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
                         {
@@ -26,41 +28,56 @@
                     </select>
                 </div>
                 <div class="form-group col-4">
-                    <label class="d-block" for="Time">Arrival Time:</label>
-                    <input id="Time" type="time" />
+                    <label class="d-block" asp-for="ArriveBy">Arrival Time:</label>
+                    <input asp-for="ArriveBy" type="time" />
                 </div>
             </div>
                 <a class="d-block btn-sm text-center btn-primary col-3" href="/mylocations">Create New Location</a>
 
                 <p class="mt-4">Select Days for this Route:</p>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Mon">
-                    <label class="form-check-label" for="Mon">Mon</label>
+                    <label asp-for="Monday" class="mr-2 mt-1">Monday</label>
+                    @Html.CheckBoxFor(m => m.Monday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Mon">
+                    <label class="form-check-label" for="Mon">Mon</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Tue">
-                    <label class="form-check-label" for="Tue">Tue</label>
+                    <label asp-for="Tuesday" class="mr-2 mt-1">Tuesday</label>
+                    @Html.CheckBoxFor(m => m.Tuesday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Tue">
+                    <label class="form-check-label" for="Tue">Tue</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Wed">
-                    <label class="form-check-label" for="Wed">Wed</label>
+                    <label asp-for="Wednesday" class="mr-2 mt-1">Wednesday</label>
+                    @Html.CheckBoxFor(m => m.Wednesday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Wed">
+                    <label class="form-check-label" for="Wed">Wed</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Thu">
-                    <label class="form-check-label" for="Thu">Thu</label>
+                    <label asp-for="Thursday" class="mr-2 mt-1">Thursday</label>
+                    @Html.CheckBoxFor(m => m.Thursday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Thu">
+                    <label class="form-check-label" for="Thu">Thu</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Fri">
-                    <label class="form-check-label" for="Fri">Fri</label>
+                    <label asp-for="Friday" class="mr-2 mt-1">Friday</label>
+                    @Html.CheckBoxFor(m => m.Friday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Fri">
+                    <label class="form-check-label" for="Fri">Fri</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Sat">
-                    <label class="form-check-label" for="Sat">Sat</label>
+                    <label asp-for="Saturday" class="mr-2 mt-1">Saturday</label>
+                    @Html.CheckBoxFor(m => m.Saturday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Sat">
+                    <label class="form-check-label" for="Sat">Sat</label> -->
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" value="" id="Sun">
-                    <label class="form-check-label" for="Sun">Sun</label>
+                    <label asp-for="Sunday" class="mr-2 mt-1">Sunday</label>
+                    @Html.CheckBoxFor(m => m.Sunday)
+                    <!-- <input class="form-check-input" type="checkbox" value="" id="Sun">
+                    <label class="form-check-label" for="Sun">Sun</label> -->
                 </div>
+                <input type="hidden" asp-for="CarpoolId" value="@ViewBag.carpoolid" />
                 <input class="btn btn-success ml-4" type="submit" value="Add New Commute!">
         </form>
     </div>
