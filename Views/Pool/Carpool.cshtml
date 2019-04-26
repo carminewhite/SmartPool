@@ -1,9 +1,114 @@
+@{
+    Layout = null;
+}
 @model Carpool
+
+
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>SmartPool</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 60%;
+        width: 100%;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+      function initMap() {
+        var markerArray = [];
+
+        // Instantiate a directions service.
+        var directionsService = new google.maps.DirectionsService;
+
+        // Create a map and center it
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: @ViewBag.ClickedCommute.startLocation.Coords
+        });
+
+        // Create a renderer for directions and bind it to the map.
+        var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
+
+        // Instantiate an info window to hold step text.
+        var stepDisplay = new google.maps.InfoWindow;
+
+        // Display the route between the initial start and end selections.
+        calculateAndDisplayRoute(
+            directionsDisplay, directionsService, markerArray, stepDisplay, map);
+        // Listen to change events from the start and end lists.
+      }
+
+      function calculateAndDisplayRoute(directionsDisplay, directionsService,
+          markerArray, stepDisplay, map) {
+        // First, remove any existing markers from the map.
+        for (var i = 0; i < markerArray.length; i++) {
+          markerArray[i].setMap(null);
+        }
+
+        // Retrieve the start and end locations and create a DirectionsRequest using
+        directionsService.route({
+          origin: @ViewBag.ClickedCommute.startLocation.Coords,
+          destination: @ViewBag.ClickedCommute.endLocation.Coords,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          // Route the directions and pass the response to a function to create
+          // markers for each step.
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            showSteps(response, markerArray, stepDisplay, map);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
+      function showSteps(directionResult, markerArray, stepDisplay, map) {
+        // For each step, place a marker, and add the text to the marker's infowindow.
+        // Also attach the marker to an array so we can keep track of it and remove it
+        // when calculating new routes.
+        var myRoute = directionResult.routes[0].legs[0];
+        /* for (var i = 0; i < myRoute.steps.length; i++) {
+          var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+          marker.setMap(map);
+          marker.setPosition(myRoute.steps[i].start_location);
+          attachInstructionText(
+              stepDisplay, marker, myRoute.steps[i].instructions, map);
+        } */
+      }
+
+      function attachInstructionText(stepDisplay, marker, text, map) {
+        google.maps.event.addListener(marker, 'click', function() {
+          // Open an info window when the marker is clicked on, containing the text
+          // of the step.
+          stepDisplay.setContent(text);
+          stepDisplay.open(map, marker);
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc_4rfCm9kufSuafhtXU56C_gaeayl1o&callback=initMap">
+    </script>
+
+
 <partial name="_Nav"/>
 <hr>
 <div class="row">
     <div class="col">
         <h4 class="d-block bg-success p-3 text-light text-center rounded">Carpool Details</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
         <h3 class="mt-4">Carpool Name: @Model.Name</h3>
         <p><span class="font-weight-bold">Description:</span>@Model.Description</p>
         <div class="mt-4">
@@ -14,10 +119,6 @@
             <a href="/update/carpool/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
         }
         </div>
-    </div>
-</div>
-<div class="row mt-4">
-    <div class="col">
         <div class="mt-4">
             <p>Riders in this pool:</p>
             <div class="row">
@@ -30,6 +131,13 @@
                 }
             </div>
         </div>
+    </div>
+    <div class="col-6">
+        <div id="map"></div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
         <div class="mt-4">
             <p>Pool schedule:</p>
             <table class="mt-4 table table-bordered">
@@ -38,6 +146,7 @@
                     <th scope="col-2">Arrive By</th>
                     <th scope="col-2">Destination</th>
                     <th scope="col-2">Destination City</th>
+                    <th scope="col-2">Show on Map</th>
                 </thead>
                 <tbody>
                     @foreach (Commute commute in @Model.commutes)
@@ -47,6 +156,7 @@
                             <td scope="col-3">@commute.ArriveBy</td>
                             <td scope="col-3">@commute.endLocation.LocationNickname</td>
                             <td scope="col-3">@commute.endLocation.City</td>
+                            <td scope="col-3"><a href="/carpool/@Model.Id/@commute.Id">Show</a></td>
                         </tr>
                     }
                 </tbody>
@@ -54,3 +164,5 @@
         </div>
     </div>
 </div>
+  </body>
+</html>
