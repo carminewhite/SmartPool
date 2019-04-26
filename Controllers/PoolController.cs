@@ -235,14 +235,10 @@ namespace SmartPool.Controllers
                 return RedirectToAction("Index", "LoginReg");
             }
 
-<<<<<<< HEAD
             List<Commute> AllCommutes = dbContext.Commutes
                 .Where(c => c.Id!=null).Include(c => c.carpool)
                 .ThenInclude(c => c.user).Include(c => c.carpool)
                 .ThenInclude(c => c.riderships).ToList();
-=======
-            List<Commute> AllCommutes = dbContext.Commutes.Include(c => c.carpool).ThenInclude(c => c.user).Include(c => c.carpool).ThenInclude(c => c.riderships).ToList();
->>>>>>> 183d9a730d96fc4c915faf27eaaab524e5164bbb
             bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
             if(idValid)
             {
@@ -259,14 +255,10 @@ namespace SmartPool.Controllers
             }
             else
             {
-<<<<<<< HEAD
                 Commute defaultCommute = dbContext.Commutes
                     .Include(c => c.startLocation)
                     .Include(c => c.endLocation)
                     .Where(c => c.Id != null).FirstOrDefault();
-=======
-                Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault();
->>>>>>> 183d9a730d96fc4c915faf27eaaab524e5164bbb
                 ViewPools Data = new ViewPools()
                 {
                     ClickedCommute = defaultCommute,
