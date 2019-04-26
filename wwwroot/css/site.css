@@ -3,6 +3,7 @@ for details on configuring this project to bundle and minify static web assets. 
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+
 }
 
 /* Wrapping element */
@@ -50,4 +51,39 @@ body {
 
 #mapholder {
     visibility: none;
+}
+
+
+/* Color Theme Swatches in Hex */
+.CAPILLARY-NAVY-1-hex { color: #002561; }
+.CAPILLARY-NAVY-2-hex { color: #335181; }
+.CAPILLARY-NAVY-3-hex { color: #667CA0; }
+.CAPILLARY-NAVY-4-hex { color: #99A8C0; }
+.CAPILLARY-NAVY-5-hex { color: #CCD3DF; }
+
+/* Color Theme Swatches in RGBA */
+.CAPILLARY-NAVY-1-rgba { color: rgba(0, 36, 96, 1); }
+.CAPILLARY-NAVY-2-rgba { color: rgba(51, 80, 128, 1); }
+.CAPILLARY-NAVY-3-rgba { color: rgba(102, 124, 160, 1); }
+.CAPILLARY-NAVY-4-rgba { color: rgba(153, 168, 191, 1); }
+.CAPILLARY-NAVY-5-rgba { color: rgba(204, 211, 223, 1); }
+
+/* Color Theme Swatches in HSLA */
+.CAPILLARY-NAVY-1-hsla { color: hsla(217, 100, 19, 1); }
+.CAPILLARY-NAVY-2-hsla { color: hsla(216, 43, 35, 1); }
+.CAPILLARY-NAVY-3-hsla { color: hsla(217, 23, 51, 1); }
+.CAPILLARY-NAVY-4-hsla { color: hsla(216, 23, 67, 1); }
+.CAPILLARY-NAVY-5-hsla { color: hsla(217, 22, 83, 1); }
+
+
+.splashpage {
+    /* background-image: url("splash.jpg"); */
+    background-color:#1b2e34;
+}
+
+.sep-bar {
+    height: 700px;
+    margin-top: 200px;
+    width: 1px;
+    background-color: #eeeeee;
 }
