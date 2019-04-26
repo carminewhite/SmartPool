@@ -19,22 +19,14 @@
             <p>Riders in this pool:</p>
             <div class="row">
                 <div class="ml-3 d-inline text-center">
-                    <img class="p-2" src="https://via.placeholder.com/150"><br>
-                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
-                </div>
-                <div class="ml-3 d-inline text-center">
-                    <img class="p-2" src="https://via.placeholder.com/150"><br>
-                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
-                </div>
-                <div class="ml-3 d-inline text-center">
-                    <img class="p-2" src="https://via.placeholder.com/150"><br>
-                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
-                </div>
-                <div class="ml-3 d-inline text-center">
-                    <img class="p-2" src="https://via.placeholder.com/150"><br>
-                    <a href="" class="btn-sm btn-danger">Kick Rider</a>
-                </div>
-
+                @foreach (Ridership ridership in @Model.riderships)
+                {
+                    <div class="col">
+                        <img class="d-inline" src="https://via.placeholder.com/150">
+                        <p>@ridership.user.FirstName @ridership.user.LastName</p>
+                        <a href="/ridership/leave/@ridership.user.Id/@Model.Id" class="btn-sm btn-danger">Kick Rider</a>
+                    </div>
+                }
 
             </div>
         </div>
@@ -50,30 +42,17 @@
                     <tr>
                         @foreach (Commute c in @Model.commutes)
                         {
-                            <td scope="col-3">@c.Day</td>
-                            <td scope="col-3">@c.ArriveBy</td>
+                        <tr>
+                            <td><a title="Delete" href="/delete/commutes/@c.Id"><img class="mr-4" width="20px" src="~/images/trash.png" alt="Delete"></a>@c.Day</td>
+                            <td class="ml-4">@c.ArriveBy</td>
+                            <td>@c.endLocation.LocationNickname</td>
+                            <td>@c.endLocation.City</td>
+                        </tr>
                         }
-                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
-                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
-                    </tr>
-                    <tr>
-                        <td scope="col-3"><span id="Day" contenteditable>Monday</span></td>
-                        <td scope="col-3"><span id="Time" contenteditable>8:00AM</span></td>
-                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
-                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
-                    </tr>
-                    <tr>
-                        <td scope="col-3"><span id="Day" contenteditable>Monday</span></td>
-                        <td scope="col-3"><span id="Time" contenteditable>8:00AM</span></td>
-                        <td scope="col-3"><span id="EndPoint" contenteditable>Bellefield Office Park</span></td>
-                        <td scope="col-3"><span id="City" contenteditable>Bellefield Office Park</span></td>
-                    </tr>
-
 
                 </tbody>
             </table>
-            <a href="" class="mt-4 d-inline btn btn-success p-3">Update Schedule</a>
-
+            <a href="/create/commute/@Model.Id" class="mt-4 d-inline btn btn-success p-3">Add New Commute</a>
         </div>
     </div>
 </div>
