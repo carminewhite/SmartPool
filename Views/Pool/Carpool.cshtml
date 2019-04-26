@@ -11,18 +11,25 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>SmartPool</title>
+    @if (!(@ViewBag.ClickedCommute is null))
+    {
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+      
       #map {
         height: 60%;
         width: 100%;
         display: inline-block;
       }
     </style>
+    }
   </head>
   <body>
 
+    <!-- {lat: 36.112238, lng: -115.1790843} -->
+@if (!(@ViewBag.ClickedCommute is null))
+{
     <script>
       function initMap() {
         var markerArray = [];
@@ -98,8 +105,8 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc_4rfCm9kufSuafhtXU56C_gaeayl1o&callback=initMap">
     </script>
-
-
+}
+<div class="container body-content">
 <partial name="_Nav"/>
 <hr>
 <div class="row">
@@ -117,10 +124,13 @@
                 <a href="/update/carpool/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
                 <a href="/delete-carpool/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Delete Carpool</a>
             }
-            else
+            else if (@Model.riderships.Any(r => r.UserId == @ViewBag.logged_in_user.Id))
             {
                 <a href="/ridership/leave/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
-                <a href="" class="mb-0 d-inline btn btn-info p-3">Contact Pool Creator</a>
+            }
+            else
+            {
+                <a href="/ridership/join/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-success p-3">Join Carpool</a>
             }
         </div>
         <div class="mt-4">
@@ -168,5 +178,6 @@
         </div>
     </div>
 </div>
-  </body>
+</div>
+</body>
 </html>

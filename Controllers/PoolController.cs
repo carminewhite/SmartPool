@@ -308,17 +308,6 @@ namespace SmartPool.Controllers
             return RedirectToAction("UpdateCarpool", new { id = carpoolId });
         }
 
-        [HttpGet("carpool-details")]
-        public IActionResult CarpoolDetails()
-        {
-            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
-            {
-                return RedirectToAction("Index", "LoginReg");
-            }    
-            return View();
-        }
-
-
         [HttpGet("update/carpool/{id}")]
         public IActionResult UpdateCarpool(int id)
         {
@@ -515,7 +504,10 @@ namespace SmartPool.Controllers
                                 .ThenInclude(r => r.user)
                                 .FirstOrDefault();
 
-            Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.carpool.Id == id).FirstOrDefault();
+            Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation)
+                                                    .Include(c => c.endLocation)
+                                                    .Where(c => c.carpool.Id == id)
+                                                    .FirstOrDefault();
             User logged_in_user = dbContext.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"));
             ViewBag.logged_in_user = logged_in_user;
             ViewBag.ClickedCommute = defaultCommute;
@@ -603,8 +595,7 @@ namespace SmartPool.Controllers
 
                 dbContext.Add(newRidership);
                 dbContext.SaveChanges();
-
-                return RedirectToAction("Carpool", new { id = carpoolid});
+                return RedirectToAction("CarpoolDefault", new { id = carpoolid});
             }
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                             .Include(u => u.carpools)
@@ -646,7 +637,5 @@ namespace SmartPool.Controllers
             ModelState.AddModelError("Error", "Cannot leave ridership for another user");
             return View("Dashboard");
         }
-
-        
     }
 }

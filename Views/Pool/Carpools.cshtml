@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>SmartPool</title>
+    @if (!(@Model.ClickedCommute is null))
+    {
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -18,9 +20,11 @@
         height: 60%;
       }
     </style>
+    }
   </head>
   <body>
-
+@if (!(@Model.ClickedCommute is null))
+{
     <script>
       function initMap() {
         var markerArray = [];
@@ -96,7 +100,8 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhc_4rfCm9kufSuafhtXU56C_gaeayl1o&callback=initMap">
     </script>
-
+}
+<div class="container body-content">
 <partial name="_Nav"/>
 <hr>
 
@@ -119,7 +124,7 @@
             @foreach (var com in @Model.AllCommutes)
             {
                 <tr>
-                    <td><a href="/carpool-details">@com.carpool.Name</a></td>
+                    <td><a href="/carpool/@com.carpool.Id">@com.carpool.Name</a></td>
                     <td>@com.Day</td>
                     <td>@com.ArriveBy.ToString("hh:mm tt")</td>
                     <td>@com.startLocation.LocationNickname</td>
@@ -140,6 +145,6 @@
 
     <div class="col"></div>
 </div>
-
-  </body>
+</div>
+</body>
 </html>
