@@ -5,13 +5,13 @@
 <div class="row">
     <div class="col">
         <h4 class="d-block bg-success p-3 text-light text-center rounded">Edit Carpool Details</h4>
-        <h3 class="mt-4 d-inline">Carpool Name:</h3> <input class="ml-2 col-9" type="text" value="@Model.Name">
-        <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p><textarea class="col-12">@Model.Description</textarea>
-
-
+        <form method="post" action="/updatedetails/carpool">
+            <h3 class="mt-4 d-inline">Carpool Name:</h3> <input name="Name" class="ml-2 col-9" type="text" value="@Model.Name">
+            <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p><textarea name="Description" placeholder="Add a detailed description.  For example:  2 people commuting from Issaquah to Seattle.  Need 1 more to use the HOV lane.  Call or text Dave" class="col-12">@Model.Description</textarea>
+            <input type="hidden" name="CarpoolId" value="@Model.Id">
+            <input type="submit" class="btn-sm btn-secondary" value="Update Carpool">
+        </form>
     </div>
-
-
 </div>
 <div class="row mt-4">
     <div class="col">
