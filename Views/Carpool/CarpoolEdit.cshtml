@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col">
         <h4 class="d-block bg-success p-3 text-light text-center rounded">Edit Carpool Details</h4>
-        <form method="post" action="/updatedetails/carpool">
+        <form method="post" asp-action="CarpoolUpdate" asp-controller="Carpool">
             <h3 class="mt-4 d-inline">Carpool Name:</h3> <input name="Name" class="ml-2 col-9" type="text" value="@Model.Name">
             <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p><textarea name="Description" placeholder="Add a detailed description.  For example:  2 people commuting from Issaquah to Seattle.  Need 1 more to use the HOV lane.  Call or text Dave" class="col-12">@Model.Description</textarea>
             <input type="hidden" name="CarpoolId" value="@Model.Id">
@@ -43,7 +43,7 @@
                         @foreach (Commute c in @Model.commutes)
                         {
                         <tr>
-                            <td><a title="Delete" href="/delete/commutes/@c.Id"><img class="mr-4" width="20px" src="~/images/trash.png" alt="Delete"></a>@c.Day</td>
+                            <td><a title="Delete" href="/commute/delete/@c.Id"><img class="mr-4" width="20px" src="~/images/trash.png" alt="Delete"></a>@c.Day</td>
                             <td class="ml-4">@c.ArriveBy</td>
                             <td>@c.endLocation.LocationNickname</td>
                             <td>@c.endLocation.City</td>
@@ -52,7 +52,7 @@
 
                 </tbody>
             </table>
-            <a href="/create/commute/@Model.Id" class="mt-4 d-inline btn btn-success p-3">Add New Commute</a>
+            <a href="/commute/new/@Model.Id" class="mt-4 d-inline btn btn-success p-3">Add New Commute</a>
         </div>
     </div>
 </div>

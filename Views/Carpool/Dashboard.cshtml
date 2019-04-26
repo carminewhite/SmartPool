@@ -20,20 +20,20 @@
             <a href="/profile" class="p-3 text-center d-block mt-4 btn btn-secondary" style="min-width: 330px;">My Profile</a>
         </div>
         <div class="row justify-content-center">
-            <a href="/carpools" class="p-3 text-center d-block mt-2 btn btn-info" style="min-width: 330px;">View/Join Carpools</a>
+            <a href="/search" class="p-3 text-center d-block mt-2 btn btn-info" style="min-width: 330px;">Find a Carpool</a>
         </div>
         @if (!(@ViewBag.logged_in_user.carpools is null))
         {
             @foreach (Carpool carpool in @ViewBag.logged_in_user.carpools)
             {
                 <div class="row justify-content-center">
-                    <a href="/carpool/@carpool.Id" class="p-3 text-center d-block mt-2 btn btn-primary" style="min-width: 330px;">View My Carpool: @carpool.Name</a>
+                    <a href="/carpool/@carpool.Id" class="p-3 text-center d-block mt-2 btn btn-primary" style="min-width: 330px;">Created Carpool: @carpool.Name</a>
                 </div>
             }
             @foreach (Ridership ridership in @ViewBag.logged_in_user.riderships)
             {
                 <div class="row justify-content-center">
-                    <a href="/carpool/@ridership.carpool.Id" class="p-3 text-center d-block mt-2 btn btn-success" style="min-width: 330px;">View My Carpool: @ridership.carpool.Name</a>
+                    <a href="/carpool/@ridership.carpool.Id" class="p-3 text-center d-block mt-2 btn btn-success" style="min-width: 330px;">Joined Carpool: @ridership.carpool.Name</a>
                 </div>
             }
         }

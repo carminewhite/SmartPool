@@ -1,8 +1,7 @@
 @{
     Layout = null;
 }
-
-@model ViewPools
+@model Carpool
 
 <html>
   <head>
@@ -11,19 +10,24 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>SmartPool</title>
-    @if (!(@Model.ClickedCommute is null))
+    @if (!(@ViewBag.ClickedCommute is null))
     {
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+      
       #map {
         height: 60%;
+        width: 100%;
+        display: inline-block;
       }
     </style>
     }
   </head>
   <body>
-@if (!(@Model.ClickedCommute is null))
+
+    <!-- {lat: 36.112238, lng: -115.1790843} -->
+@if (!(@ViewBag.ClickedCommute is null))
 {
     <script>
       function initMap() {
@@ -35,7 +39,7 @@
         // Create a map and center it
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
-          center: @Model.ClickedCommute.startLocation.Coords
+          center: @ViewBag.ClickedCommute.startLocation.Coords
         });
 
         // Create a renderer for directions and bind it to the map.
@@ -59,8 +63,8 @@
 
         // Retrieve the start and end locations and create a DirectionsRequest using
         directionsService.route({
-          origin: @Model.ClickedCommute.startLocation.Coords,
-          destination: @Model.ClickedCommute.endLocation.Coords,
+          origin: @ViewBag.ClickedCommute.startLocation.Coords,
+          destination: @ViewBag.ClickedCommute.endLocation.Coords,
           travelMode: 'DRIVING'
         }, function(response, status) {
           // Route the directions and pass the response to a function to create
@@ -104,46 +108,74 @@
 <div class="container body-content">
 <partial name="_Nav"/>
 <hr>
-
-<h4 class="d-block bg-success p-3 text-light text-center rounded">Carpools Available</h4>
 <div class="row">
-    <div class="col pre-scrollable d-block">
-        <table class="mt-4 table table-striped table-bordered">
-
-            <thead>
-                <tr>
-                    <th>Carpool Name</th>
-                    <th>Commute Day</th>
-                    <th>Arrive By</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Show On Map</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var com in @Model.AllCommutes)
-            {
-                <tr>
-                    <td><a href="/carpool/@com.carpool.Id">@com.carpool.Name</a></td>
-                    <td>@com.Day</td>
-                    <td>@com.ArriveBy.ToString("hh:mm tt")</td>
-                    <td>@com.startLocation.LocationNickname</td>
-                    <td>@com.endLocation.LocationNickname</td>
-                    <td id="#showmap" ><a href="/carpools/@com.Id">Show</a></td>
-                </tr>
-            }
-            </tbody>
-        </table>
+    <div class="col">
+        <h4 class="d-block bg-success p-3 text-light text-center rounded">Carpool Details</h4>
     </div>
 </div>
-
-<div id="mapholder" class="row mt-4">
-    <div class="col"></div>
-        <div class="col" id="map">
-        <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->
+<div class="row">
+    <div class="col-6">
+        <h3 class="mt-4">Carpool Name: @Model.Name</h3>
+        <p><span class="font-weight-bold">Description:</span>@Model.Description</p>
+        <div class="mt-4">
+            @if (@Model.UserId == @ViewBag.logged_in_user.Id)
+            {
+                <a href="/carpool/edit/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
+                <a href="/carpool/delete/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Delete Carpool</a>
+            }
+            else if (@Model.riderships.Any(r => r.UserId == @ViewBag.logged_in_user.Id))
+            {
+                <a href="/ridership/leave/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
+            }
+            else
+            {
+                <a href="/ridership/join/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-success p-3">Join Carpool</a>
+            }
         </div>
-
-    <div class="col"></div>
+        <div class="mt-4">
+            <p>Riders in this pool:</p>
+            <div class="row">
+                @foreach (Ridership ridership in @Model.riderships)
+                {
+                    <div class="col">
+                        <img class="d-inline" src="https://via.placeholder.com/150">
+                        <p>@ridership.user.FirstName @ridership.user.LastName</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div id="map"></div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <div class="mt-4">
+            <p>Pool schedule:</p>
+            <table class="mt-4 table table-bordered">
+                <thead>
+                    <th scope="col-2">Day</th>
+                    <th scope="col-2">Arrive By</th>
+                    <th scope="col-2">Destination</th>
+                    <th scope="col-2">Destination City</th>
+                    <th scope="col-2">Show on Map</th>
+                </thead>
+                <tbody>
+                    @foreach (Commute commute in @Model.commutes)
+                    {
+                        <tr>
+                            <td scope="col-3">@commute.Day</td>
+                            <td scope="col-3">@commute.ArriveBy</td>
+                            <td scope="col-3">@commute.endLocation.LocationNickname</td>
+                            <td scope="col-3">@commute.endLocation.City</td>
+                            <td scope="col-3"><a href="/carpool/@Model.Id/@commute.Id">Show</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </div>
 </body>

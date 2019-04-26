@@ -59,7 +59,7 @@ namespace SmartPool.Controllers
 
                 HttpContext.Session.SetInt32("LoggedInUserId", newUser.Id);
 
-                return RedirectToAction("Dashboard", "Pool");
+                return RedirectToAction("Dashboard", "Carpool");
             }
             return View("Registration");
         }
@@ -89,7 +89,7 @@ namespace SmartPool.Controllers
 
                 HttpContext.Session.SetInt32("LoggedInUserId", userInDb.Id);
 
-                return RedirectToAction("Dashboard", "Pool");
+                return RedirectToAction("Dashboard", "Carpool");
             }
             return View("Index");
         }

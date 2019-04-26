@@ -3,7 +3,7 @@
     <div class="justify-content-center row">
         <h3 class="mb-3">Edit Profile</h3>
     </div>
-    <form asp-action="ProfileUpdate" asp-controller="Pool" method="POST">
+    <form asp-action="ProfileUpdate" asp-controller="Profile" method="POST">
         <div class="row justify-content-center">
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
@@ -11,7 +11,7 @@
             <div class="input-group-prepend">
                 <label class="input-group-text justify-content-center" asp-for="FirstName" style="min-width: 160px;">First Name</label>
             </div>
-            <input type="text" class="form-control" asp-for="FirstName" style="max-width: 300px;" value="@ViewBag.user.FirstName">
+            <input type="text" class="form-control" asp-for="FirstName" style="max-width: 300px;" value="@ViewBag.logged_in_user.FirstName">
         </div>
 
         <div class="row justify-content-center">
@@ -21,7 +21,7 @@
             <div class="input-group-prepend">
                 <label class="input-group-text justify-content-center" asp-for="LastName" style="min-width: 160px;">Last Name</label>
             </div>
-            <input type="text" class="form-control" asp-for="LastName" style="max-width: 300px;" value="@ViewBag.user.LastName">
+            <input type="text" class="form-control" asp-for="LastName" style="max-width: 300px;" value="@ViewBag.logged_in_user.LastName">
         </div>
 
         <div class="row justify-content-center">
@@ -31,7 +31,7 @@
             <div class="input-group-prepend">
                 <label class="input-group-text justify-content-center" asp-for="Email" style="min-width: 160px;">Email</label>
             </div>
-            <input type="text" class="form-control" asp-for="Email" style="max-width: 300px;" value="@ViewBag.user.Email">
+            <input type="text" class="form-control" asp-for="Email" style="max-width: 300px;" value="@ViewBag.logged_in_user.Email">
         </div>
 
         <div class="row justify-content-center">
@@ -41,7 +41,7 @@
             <div class="input-group-prepend">
                 <label class="input-group-text justify-content-center" asp-for="Phone" style="min-width: 160px;">Phone Number</label>
             </div>
-            <input type="text" class="form-control" asp-for="Phone" style="max-width: 300px;" value="@ViewBag.user.Phone">
+            <input type="text" class="form-control" asp-for="Phone" style="max-width: 300px;" value="@ViewBag.logged_in_user.Phone">
         </div>
 
         <div class="row justify-content-center">

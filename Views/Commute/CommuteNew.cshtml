@@ -5,10 +5,11 @@
 <div class="row mt-4">
     <div class="col"></div>
     <div class="col-8">
-        <form method="post" asp-controller="Pool" asp-action="AddCommute">
+        <form method="post" asp-controller="Commute" asp-action="CommuteCreate">
             <div class="form-row">
                 <div class="form-group col-4">
-                    <label class="d-block" for="StartPoint">Start Point:</label>
+                    <span asp-validation-for="StartLocationId" class="text-danger"></span>
+                    <label class="d-block" asp-for="StartLocationId">Start Point:</label>
                     <select asp-for="StartLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
@@ -18,7 +19,8 @@
                     </select>
                 </div>
                 <div class="form-group col-4">
-                    <label class="d-block" for="EndPoint">Destination:</label>
+                    <span asp-validation-for="EndLocationId" class="text-danger"></span>
+                    <label class="d-block" asp-for="EndLocationId">Destination:</label>
                     <select asp-for="EndLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
@@ -28,11 +30,12 @@
                     </select>
                 </div>
                 <div class="form-group col-4">
+                    <span asp-validation-for="ArriveBy" class="text-danger"></span>
                     <label class="d-block" asp-for="ArriveBy">Arrival Time:</label>
                     <input asp-for="ArriveBy" type="time" />
                 </div>
             </div>
-                <a class="d-block btn-sm text-center btn-primary col-3" href="/mylocations">Create New Location</a>
+                <a class="d-block btn-sm text-center btn-primary col-3" href="/location/new">Create New Location</a>
 
                 <p class="mt-4">Select Days for this Route:</p>
                 <div class="form-check form-check-inline">
