@@ -317,6 +317,20 @@ namespace SmartPool.Controllers
             return View(carpool);
         }
 
+        [HttpPost("updatedetails/carpool")]
+        public IActionResult UpdateCarpoolDetails(string Name, string Description, int CarpoolId)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+            Carpool thisCarpool = dbContext.Carpools.Where(c => c.Id == CarpoolId).FirstOrDefault();
+            thisCarpool.Name = Name;
+            thisCarpool.Description = Description;
+            dbContext.Update(thisCarpool);
+            dbContext.SaveChanges();
+            return RedirectToAction("UpdateCarpool", new { id = CarpoolId });
+        }
 
 
         [HttpGet("profile")]
@@ -571,5 +585,7 @@ namespace SmartPool.Controllers
             ModelState.AddModelError("Error", "Cannot leave ridership for another user");
             return View("Dashboard");
         }
+
+        
     }
 }
