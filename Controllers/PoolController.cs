@@ -87,16 +87,32 @@ namespace SmartPool.Controllers
 
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                     .Include(u => u.carpools)
+                                    .Include(u => u.riderships)
+                                    .ThenInclude(r => r.carpool)
                                     .FirstOrDefault();
             ViewBag.logged_in_user = logged_in_user;
             return View();
         }
-
-        [HttpGet("/commute/create")]
-        public IActionResult CommuteForm()
+            
+        [HttpGet("create/commute/{carpoolid}")]
+        public IActionResult CreateCommute(int carpoolid)
         {
+
+            List<Location> allLocations = dbContext.Locations
+                .OrderByDescending(u => u.CreatedAt)
+                .ToList();
+            ViewBag.ListofLocations = allLocations;
+            ViewBag.carpoolid = carpoolid;
             return View();
+            
         }
+
+        // [HttpGet("/commute/create")]
+        // public IActionResult CommuteForm()
+        // {
+
+        //     return View();
+        // }
 
         [HttpPost("/commute/create")]
         public IActionResult AddCommute(CommuteForm form)
@@ -196,7 +212,8 @@ namespace SmartPool.Controllers
                         dbContext.SaveChanges();
                     }
                     System.Console.WriteLine("POSTED TO DB?????");
-                    return RedirectToAction("Dashboard");
+                    return RedirectToAction("UpdateCarpool", new {id = form.CarpoolId});
+
                 }
                 else
                 {
@@ -210,26 +227,7 @@ namespace SmartPool.Controllers
             }
         }
 
-        
-
-
-        // [HttpGet("commutes/{id}")]
-        // public IActionResult Commutes()
-        // {
-        //     bool idValid = Int32.TryParse(RouteData.Values["id"].ToString(), out int comId);
-        //     if(idValid)
-        //     {
-        //         Commute clickedCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).FirstOrDefault(c => c.Id == comId);
-        //         return View(clickedCommute);
-        //     }
-        //     else
-        //     {
-        //         Commute defaultCommute = dbContext.Commutes.Include(c => c.startLocation).Include(c => c.endLocation).Where(c => c.Id != null).FirstOrDefault();
-        //         return View(defaultCommute);
-        //     }
-        // }
-
-        [HttpGet("/carpools")]
+        [HttpGet("carpools")]
         public IActionResult CarpoolsDefault()
         {
             if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
@@ -270,6 +268,23 @@ namespace SmartPool.Controllers
             // }
         }
 
+        [HttpGet("delete/commutes/{id}")]
+        public IActionResult DeleteCommute(int id)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            Commute thisCommute = dbContext.Commutes
+                .Where(u => u.Id == id)
+                .FirstOrDefault();
+            dbContext.Remove(thisCommute);
+            dbContext.SaveChanges();
+            int carpoolId = thisCommute.CarpoolId;
+            return RedirectToAction("UpdateCarpool", new { id = carpoolId });
+        }
+
         [HttpGet("carpool-details")]
         public IActionResult CarpoolDetails()
         {
@@ -301,6 +316,7 @@ namespace SmartPool.Controllers
             ViewBag.logged_in_user = logged_in_user;
             return View(carpool);
         }
+
 
 
         [HttpGet("profile")]
@@ -368,18 +384,7 @@ namespace SmartPool.Controllers
                 }
             return View("MyLocations");
         }
-            
-        [HttpGet("create-commute")]
-        public IActionResult CreateCommute()
-        {
 
-            List<Location> allLocations = dbContext.Locations
-                .OrderByDescending(u => u.CreatedAt)
-                .ToList();
-            ViewBag.ListofLocations = allLocations;
-            return View();
-            
-        }
 
         [HttpPost("profile/update")]
         public IActionResult ProfileUpdate(UpdateUser form)
@@ -417,19 +422,6 @@ namespace SmartPool.Controllers
                 return View("Profile");
             }
         }
-
-        // [HttpPost("create-new-commute")]
-        // public IActionResult CreateNewCommute(FormCommute form)
-        // {
-        //     if(ModelState.IsValid)
-        //     {
-        //         User CurrentUser = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId")).FirstOrDefault();
-        //         if(CurrentUser == null)
-        //         {
-        //             return Redirect("/logout");
-        //         }
-
-        // }
 
         [HttpPost("create-carpool")]
         public IActionResult CreateCarpool(CreateCarpool form)
@@ -512,6 +504,101 @@ namespace SmartPool.Controllers
             ViewBag.logged_in_user = logged_in_user;
             ViewBag.ClickedCommute = clickedCommute;
             return View(carpool);
+        }
+
+        [HttpGet("delete-carpool/{id}")]
+        public IActionResult DeleteCarpool(int id)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            Carpool carpoolToRemove = dbContext.Carpools.Where(c => c.Id == id)
+                                            .Include(c => c.user)
+                                            .FirstOrDefault();
+
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                            .Include(u => u.carpools)
+                                            .FirstOrDefault();
+            if (carpoolToRemove is null)
+            {
+                ViewBag.logged_in_user = logged_in_user;
+                ModelState.AddModelError("Error", "Carpool for deletion does not exist");
+                return View("Dashboard");
+            }
+            if (logged_in_user.Id == carpoolToRemove.user.Id)
+            {
+                dbContext.Remove(carpoolToRemove);
+                dbContext.SaveChanges();
+
+
+                ViewBag.logged_in_user = logged_in_user;
+
+                return RedirectToAction("Dashboard");
+            }
+            
+            ViewBag.logged_in_user = logged_in_user;
+            ModelState.AddModelError("Error", "Insufficient privileges to delete that carpool");
+            return View("Dashboard");
+        }
+
+        [HttpGet("ridership/join/{userid}/{carpoolid}")]
+        public IActionResult RidershipJoin(int userid, int carpoolid)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            if (HttpContext.Session.GetInt32("LoggedInUserId") == userid)
+            {
+                Ridership newRidership = new Ridership()
+                {
+                    UserId = userid,
+                    CarpoolId = carpoolid
+                };
+
+                dbContext.Add(newRidership);
+                dbContext.SaveChanges();
+
+                return RedirectToAction("Carpool", new { id = carpoolid});
+            }
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                            .Include(u => u.carpools)
+                                            .FirstOrDefault();
+            ViewBag.logged_in_user = logged_in_user;
+            ModelState.AddModelError("Error", "Cannot join ridership for another user");
+            return View("Dashboard");
+        }
+        [HttpGet("ridership/leave/{userid}/{carpoolid}")]
+        public IActionResult RidershipLeave(int userid, int carpoolid)
+        {
+            if (HttpContext.Session.GetInt32("LoggedInUserId") is null)
+            {
+                return RedirectToAction("Index", "LoginReg");
+            }
+
+            User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
+                                        .Include(u => u.carpools)
+                                        .FirstOrDefault();
+            
+            if (HttpContext.Session.GetInt32("LoggedInUserId") == userid)
+            {
+                Ridership ridershipToRemove = dbContext.Riderships.Where(r => (r.CarpoolId == carpoolid) && (r.UserId == userid))
+                                                .FirstOrDefault();
+                dbContext.Remove(ridershipToRemove);
+                dbContext.SaveChanges();
+
+                
+                ViewBag.logged_in_user = logged_in_user;
+
+                return RedirectToAction("Dashboard");
+            }
+
+            ViewBag.logged_in_user = logged_in_user;
+            ModelState.AddModelError("Error", "Cannot leave ridership for another user");
+            return View("Dashboard");
         }
     }
 }

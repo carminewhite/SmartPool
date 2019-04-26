@@ -77,8 +77,7 @@
                     <!-- <input class="form-check-input" type="checkbox" value="" id="Sun">
                     <label class="form-check-label" for="Sun">Sun</label> -->
                 </div>
-
-                @Html.Hidden("CarpoolId", "1")
+                <input type="hidden" asp-for="CarpoolId" value="@ViewBag.carpoolid" />
                 <input class="btn btn-success ml-4" type="submit" value="Add New Commute!">
         </form>
     </div>
