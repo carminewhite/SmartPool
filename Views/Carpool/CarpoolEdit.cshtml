@@ -7,15 +7,40 @@
         <h4 class="d-block bg-success p-3 text-light text-center rounded">Edit Carpool Details</h4>
         <form method="post" asp-action="CarpoolUpdate" asp-controller="Carpool">
             <h3 class="mt-4 d-inline">Carpool Name:</h3> <input name="Name" class="ml-2 col-9" type="text" value="@Model.Name">
-            <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p><textarea name="Description" placeholder="Add a detailed description.  For example:  2 people commuting from Issaquah to Seattle.  Need 1 more to use the HOV lane.  Call or text Dave" class="col-12">@Model.Description</textarea>
+            <p class="mt-4"><span class="font-weight-bold d-inline">Description:</span></p>
+            <textarea name="Description" placeholder="Add a detailed description.  For example:  2 people commuting from Issaquah to Seattle.  Need 1 more to use the HOV lane.  Call or text Dave" class="col-9">@Model.Description</textarea>
             <input type="hidden" name="CarpoolId" value="@Model.Id">
-            <input type="submit" class="btn-sm btn-secondary" value="Update Carpool">
+            <input type="submit" class="btn btn-success p-3 align-top ml-2" value="Update Name and Description">
         </form>
     </div>
 </div>
-<div class="row mt-4">
+<div class="row mt-2">
     <div class="col">
         <div class="mt-4">
+            <table class="my-4 table table-bordered">
+                <thead>
+                    <th scope="col-2">Day</th>
+                    <th scope="col-2">Start</th>
+                    <th scope="col-2">Destination</th>
+                    <th scope="col-2">Arrive By</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        @foreach (Commute c in @Model.commutes)
+                        {
+                        <tr>
+                            <td><a title="Delete" href="/commute/delete/@c.Id"><img class="mr-4" width="20px" src="~/images/trash.png" alt="Delete"></a>@c.Day</td>
+                            <td>@c.startLocation.LocationNickname, @c.startLocation.City</td>
+                            <td>@c.endLocation.LocationNickname, @c.endLocation.City</td>
+                            <td>@c.ArriveBy.ToString("h:mm tt")</td>
+                        </tr>
+                        }
+
+                </tbody>
+            </table>
+            <a href="/commute/new/@Model.Id" class="mt-1 d-inline btn btn-success p-3 float-right">Add New Commute</a>
+        </div>
+        <div class="mt-2">
             <p>Riders in this pool:</p>
             <div class="row">
                 <div class="ml-3 d-inline text-center">
@@ -24,35 +49,10 @@
                     <div class="col">
                         <img class="d-inline" src="https://via.placeholder.com/150">
                         <p>@ridership.user.FirstName @ridership.user.LastName</p>
-                        <a href="/ridership/leave/@ridership.user.Id/@Model.Id" class="btn-sm btn-danger">Kick Rider</a>
+                        <a href="/ridership/kick/@ridership.user.Id/@Model.Id" class="btn-sm btn-danger">Kick Rider</a>
                     </div>
                 }
-
             </div>
-        </div>
-        <div class="mt-4">
-            <table class="my-4 table table-bordered">
-                <thead>
-                    <th scope="col-2">Day</th>
-                    <th scope="col-2">Arrive By</th>
-                    <th scope="col-2">Destination</th>
-                    <th scope="col-2">City</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        @foreach (Commute c in @Model.commutes)
-                        {
-                        <tr>
-                            <td><a title="Delete" href="/commute/delete/@c.Id"><img class="mr-4" width="20px" src="~/images/trash.png" alt="Delete"></a>@c.Day</td>
-                            <td class="ml-4">@c.ArriveBy</td>
-                            <td>@c.endLocation.LocationNickname</td>
-                            <td>@c.endLocation.City</td>
-                        </tr>
-                        }
-
-                </tbody>
-            </table>
-            <a href="/commute/new/@Model.Id" class="mt-4 d-inline btn btn-success p-3">Add New Commute</a>
         </div>
     </div>
 </div>

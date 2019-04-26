@@ -33,10 +33,12 @@ namespace SmartPool.Controllers
 
             HttpContext.Session.SetInt32("cpId", carpoolId);
 
-            List<Location> allLocations = dbContext.Locations
+            List<Location> thisUsersLocations = dbContext.Locations
+                .Include(l => l.user)
+                .Where(l => l.user.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                 .OrderByDescending(u => u.CreatedAt)
                 .ToList();
-            ViewBag.ListofLocations = allLocations;
+            ViewBag.ListofLocations = thisUsersLocations;
             ViewBag.carpoolid = carpoolId;
             return View();
         }

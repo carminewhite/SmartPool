@@ -114,51 +114,68 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
-        <h3 class="mt-4">Carpool Name: @Model.Name</h3>
-        <p><span class="font-weight-bold">Description:</span>@Model.Description</p>
-        <div class="mt-4">
+    <div class="col-md-6">
+        <div class="row">
+            <h3 class="mt-4 ml-3">Carpool Name: @Model.Name</h3>
+        </div>
+        <div class="row">
             @if (@Model.UserId == @ViewBag.logged_in_user.Id)
             {
-                <a href="/carpool/edit/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
-                <a href="/carpool/delete/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Delete Carpool</a>
+                <a href="/carpool/edit/@Model.Id" class="btn btn-info p-2 my-2 ml-3">Edit Carpool</a>
+                <a href="/carpool/delete/@Model.Id" class="btn btn-danger p-2 my-2 ml-3">Delete Carpool</a>
             }
             else if (@Model.riderships.Any(r => r.UserId == @ViewBag.logged_in_user.Id))
             {
-                <a href="/ridership/leave/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
+                <a href="/ridership/leave/@ViewBag.logged_in_user.Id/@Model.Id" class="btn btn-danger p-2 my-2 ml-3">Leave Carpool</a>
             }
             else
             {
-                <a href="/ridership/join/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-success p-3">Join Carpool</a>
+                <a href="/ridership/join/@ViewBag.logged_in_user.Id/@Model.Id" class="btn btn-success p-2 my-2 ml-3">Join Carpool</a>
             }
         </div>
-        <div class="mt-4">
-            <p>Riders in this pool:</p>
-            <div class="row">
-                @foreach (Ridership ridership in @Model.riderships)
-                {
+        <div class="row">
+            <div class="col">
+                <p class="font-weight-bold mb-1">Description:</p>
+                <p class="mb-0">@Model.Description</p>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <p class="font-weight-bold">Riders in this pool:</p>
+                <div class="row">
                     <div class="col">
-                        <img class="d-inline" src="https://via.placeholder.com/150">
-                        <p>@ridership.user.FirstName @ridership.user.LastName</p>
+                            <img class="d-inline" src="https://via.placeholder.com/150">
+                            <p class="mb-0">@Model.user.FirstName @Model.user.LastName</p>
+                            <p>(Creator of this carpool)</p>
                     </div>
-                }
+                    @foreach (Ridership ridership in @Model.riderships)
+                    {
+                        <div class="col">
+                            <img class="d-inline" src="https://via.placeholder.com/150">
+                            <p>@ridership.user.FirstName @ridership.user.LastName</p>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-6">
-        <div id="map"></div>
+    <div class="col-md-6">
+        @if (!(@ViewBag.ClickedCommute is null))
+        {
+        <div id="map" class="border border-info rounded-lg mt-2"></div>
+        }
     </div>
 </div>
 <div class="row mt-4">
     <div class="col">
-        <div class="mt-4">
-            <p>Pool schedule:</p>
+        <div>
+            <p class="font-weight-bold">Pool schedule:</p>
             <table class="mt-4 table table-bordered">
                 <thead>
                     <th scope="col-2">Day</th>
-                    <th scope="col-2">Arrive By</th>
+                    <th scope="col-2">Start</th>
                     <th scope="col-2">Destination</th>
-                    <th scope="col-2">Destination City</th>
+                    <th scope="col-2">Arrive By</th>
                     <th scope="col-2">Show on Map</th>
                 </thead>
                 <tbody>
@@ -166,9 +183,9 @@
                     {
                         <tr>
                             <td scope="col-3">@commute.Day</td>
-                            <td scope="col-3">@commute.ArriveBy</td>
-                            <td scope="col-3">@commute.endLocation.LocationNickname</td>
-                            <td scope="col-3">@commute.endLocation.City</td>
+                            <td scope="col-3">@commute.startLocation.LocationNickname, @commute.startLocation.City</td>
+                            <td scope="col-3">@commute.endLocation.LocationNickname, @commute.endLocation.City</td>
+                            <td scope="col-3">@commute.ArriveBy.ToString("h:mm tt")</td>
                             <td scope="col-3"><a href="/carpool/@Model.Id/@commute.Id">Show</a></td>
                         </tr>
                     }

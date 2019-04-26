@@ -17,7 +17,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 60%;
+        height: 45%;
       }
     </style>
     }
@@ -104,12 +104,10 @@
 <div class="container body-content">
 <partial name="_Nav"/>
 <hr>
-
 <h4 class="d-block bg-success p-3 text-light text-center rounded">Carpools Available</h4>
 <div class="row">
     <div class="col pre-scrollable d-block">
         <table class="mt-4 table table-striped table-bordered">
-
             <thead>
                 <tr>
                     <th>Carpool Name</th>
@@ -126,9 +124,9 @@
                 <tr>
                     <td><a href="/carpool/@com.carpool.Id">@com.carpool.Name</a></td>
                     <td>@com.Day</td>
-                    <td>@com.ArriveBy.ToString("hh:mm tt")</td>
-                    <td>@com.startLocation.LocationNickname</td>
-                    <td>@com.endLocation.LocationNickname</td>
+                    <td>@com.ArriveBy.ToString("h:mm tt")</td>
+                    <td>@com.startLocation.LocationNickname, @com.startLocation.City</td>
+                    <td>@com.endLocation.LocationNickname, @com.endLocation.City</td>
                     <td id="#showmap" ><a href="/search/@com.Id">Show</a></td>
                 </tr>
             }
@@ -137,13 +135,10 @@
     </div>
 </div>
 
-<div id="mapholder" class="row mt-4">
-    <div class="col"></div>
-        <div class="col" id="map">
-        <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->
-        </div>
-
-    <div class="col"></div>
+<div id="mapholder" class="row my-4 ml-1 border border-info rounded-lg">
+    <div class="col" id="map">
+    <!-- <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=bellevue%2C%20wa&key=AIzaSyBHgUzRMiC3ijP03NQFqupHlPljcL8smdE" allowfullscreen></iframe> -->
+    </div>
 </div>
 </div>
 </body>

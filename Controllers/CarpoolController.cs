@@ -21,61 +21,7 @@ namespace SmartPool.Controllers
             dbContext = context;
         }
 
-        // User Test = new User();
-        // Test.FirstName = "Freddy";
-        // Test.LastName = "Fish";
-        // Test.Phone = "(425) 883-2503";
-        // Test.PwHash = "SECRET";
-        // Test.Email = "mail@mail.com";
-        // List<Commute> userCommutes = new List<Commute>();
-        // Commute TestCommute = new Commute();
-        // TestCommute.ArriveBy = DateTime.Now;
-        // TestCommute.Day = DateTime.Today.DayOfWeek.
-        // TestCommute.StartPt = "Adress blah blah";
-        // TestCommute.EndPt = "Another Adress";
-        // Carpool TestPool = new Carpool();
-        // TestPool.Commutes = new List<Commute>();
-        // TestPool.Commutes.Add(TestCommute);
-        // TestCommute.carpool = TestPool;
-        // userCommutes.Add(TestCommute);
-        // Test.Commutes = userCommutes;
-        // dbContext.Users.Add(Test);
-        // dbContext.SaveChanges();
 
-        // [HttpGet("test")]
-        // public async Task<IActionResult> Test()
-        // {
-        //     var origin = await HttpService.GetGeoCode("6907 150th Ave Ne Redmond WA");
-        //     if(origin[0] != "ERROR")
-        //     {
-        //         System.Console.WriteLine($"Lat: {origin[0]} Long: {origin[1]}");
-        //     }
-        //     else
-        //     {
-        //         System.Console.WriteLine("Invalid address");
-        //     }
-
-        //     var dest = await HttpService.GetGeoCode("Space Needle");
-        //     if(dest[0] != "ERROR")
-        //     {
-        //         System.Console.WriteLine($"Lat: {dest[0]} Long: {dest[1]}");
-        //     }
-        //     else
-        //     {
-        //         System.Console.WriteLine("Invalid address");
-        //     }
-
-        //     Dictionary<string, string> Package = new Dictionary<string, string>();
-        //     Package.Add("origin-lat", origin[0]);
-        //     Package.Add("origin-lng", origin[1]);
-
-        //     Package.Add("dest-lat", dest[0]);
-        //     Package.Add("dest-lng", dest[1]);
-
-        //     ViewBag.places = Package;
-
-        //     return View();
-        // }
 
         [HttpGet("dashboard")]
         public IActionResult Dashboard()
@@ -111,6 +57,8 @@ namespace SmartPool.Controllers
                                             .ThenInclude(c => c.user)
                                             .Include(c => c.carpool)
                                             .ThenInclude(c => c.riderships)
+                                            .ThenInclude(r => r.user)
+                                            .Where(c => (c.carpool.user.Id != HttpContext.Session.GetInt32("LoggedInUserId")) && (!(c.carpool.riderships.Any(r => r.user.Id == HttpContext.Session.GetInt32("LoggedInUserId")))))
                                             .OrderBy(c => c.Day)
                                             .ThenBy(c => c.ArriveBy.Hour)
                                             .ToList();
@@ -144,9 +92,12 @@ namespace SmartPool.Controllers
                                             .ThenInclude(c => c.user)
                                             .Include(c => c.carpool)
                                             .ThenInclude(c => c.riderships)
+                                            .ThenInclude(r => r.user)
+                                            .Where(c => (c.carpool.user.Id != HttpContext.Session.GetInt32("LoggedInUserId")) && (!(c.carpool.riderships.Any(r => r.user.Id == HttpContext.Session.GetInt32("LoggedInUserId")))))
                                             .OrderBy(c => c.Day)
                                             .ThenBy(c => c.ArriveBy.Hour)
                                             .ToList();
+
             bool idValid = Int32.TryParse(RouteData.Values["mappedCommuteId"].ToString(), out int comId);
 
             Commute clickedCommute = dbContext.Commutes
@@ -201,7 +152,7 @@ namespace SmartPool.Controllers
             thisCarpool.Description = Description;
             dbContext.Update(thisCarpool);
             dbContext.SaveChanges();
-            return RedirectToAction("CarpoolEdit", new { id = CarpoolId });
+            return RedirectToAction("CarpoolDefault", new { id = CarpoolId });
         }
 
 

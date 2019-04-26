@@ -3,13 +3,12 @@
 <hr>
 <h4 class="d-block bg-primary p-3 text-light text-center rounded">Create a New Commute</h4>
 <div class="row mt-4">
-    <div class="col"></div>
-    <div class="col-8">
-        <form method="post" asp-controller="Commute" asp-action="CommuteCreate">
+        <div class="col-1"></div>
+        <form method="post" asp-controller="Commute" asp-action="CommuteCreate" class="col-10">
             <div class="form-row">
                 <div class="form-group col-4">
                     <span asp-validation-for="StartLocationId" class="text-danger"></span>
-                    <label class="d-block" asp-for="StartLocationId">Start Point:</label>
+                    <label class="d-block font-weight-bold" asp-for="StartLocationId">Start Point:</label>
                     <select asp-for="StartLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
@@ -20,7 +19,7 @@
                 </div>
                 <div class="form-group col-4">
                     <span asp-validation-for="EndLocationId" class="text-danger"></span>
-                    <label class="d-block" asp-for="EndLocationId">Destination:</label>
+                    <label class="d-block font-weight-bold" asp-for="EndLocationId">Destination:</label>
                     <select asp-for="EndLocationId">
                         <option>Select location...</option>
                         @foreach (Location loc in @ViewBag.ListofLocations)
@@ -30,14 +29,13 @@
                     </select>
                 </div>
                 <div class="form-group col-4">
-                    <span asp-validation-for="ArriveBy" class="text-danger"></span>
-                    <label class="d-block" asp-for="ArriveBy">Arrival Time:</label>
-                    <input asp-for="ArriveBy" type="time" />
+                    <a class="d-block btn-sm text-center btn-primary p-3 mt-2" href="/location/new">Create New Location</a>
                 </div>
             </div>
-                <a class="d-block btn-sm text-center btn-primary col-3" href="/location/new">Create New Location</a>
-
-                <p class="mt-4">Select Days for this Route:</p>
+            <div class="form-row">
+                <p class="font-weight-bold">Select Days for this Route:</p>
+            </div>
+            <div class="form-row">
                 <div class="form-check form-check-inline">
                     <label asp-for="Monday" class="mr-2 mt-1">Monday</label>
                     @Html.CheckBoxFor(m => m.Monday)
@@ -80,9 +78,16 @@
                     <!-- <input class="form-check-input" type="checkbox" value="" id="Sun">
                     <label class="form-check-label" for="Sun">Sun</label> -->
                 </div>
+            </div>
+            <div class="form-row mt-3">
+                <span asp-validation-for="ArriveBy" class="text-danger"></span>
+                <label class="d-block font-weight-bold" asp-for="ArriveBy">Arrival Time:</label>
+            </div>
+            <div class="form-row mt-3">
+                <input asp-for="ArriveBy" type="time"/>
                 <input type="hidden" asp-for="CarpoolId" value="@ViewBag.carpoolid" />
-                <input class="btn btn-success ml-4" type="submit" value="Add New Commute!">
+                <input class="btn btn-success p-2 ml-5" type="submit" value="Add New Commute!">
+            </div>
         </form>
-    </div>
-    <div class="col"></div>
+        <div class="col-1"></div>
 </div>
