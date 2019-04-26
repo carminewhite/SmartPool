@@ -41,7 +41,7 @@ namespace SmartPool.Controllers
 
                 dbContext.Add(newRidership);
                 dbContext.SaveChanges();
-                return RedirectToAction("CarpoolDefault", "Pool", new { id = carpoolId});
+                return RedirectToAction("CarpoolDefault", "Carpool", new { id = carpoolId});
             }
             User logged_in_user = dbContext.Users.Where(u => u.Id == HttpContext.Session.GetInt32("LoggedInUserId"))
                                             .Include(u => u.carpools)
@@ -50,7 +50,7 @@ namespace SmartPool.Controllers
                                             .FirstOrDefault();
             ViewBag.logged_in_user = logged_in_user;
             ModelState.AddModelError("Error", "Cannot join ridership for another user");
-            return View("Dashboard", "Pool");
+            return View("Dashboard", "Carpool");
         }
 
 
@@ -79,12 +79,12 @@ namespace SmartPool.Controllers
                 
                 ViewBag.logged_in_user = logged_in_user;
 
-                return RedirectToAction("Dashboard", "Pool");
+                return RedirectToAction("Dashboard", "Carpool");
             }
 
             ViewBag.logged_in_user = logged_in_user;
             ModelState.AddModelError("Error", "Cannot leave ridership for another user");
-            return View("Dashboard", "Pool");
+            return View("Dashboard", "Carpool");
         }
     }
 }

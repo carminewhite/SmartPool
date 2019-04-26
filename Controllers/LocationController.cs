@@ -69,7 +69,7 @@ namespace SmartPool.Controllers
 
                     dbContext.Add(newLocation);
                     dbContext.SaveChanges();
-                    return Redirect($"/create/commute/{HttpContext.Session.GetInt32("cpId")}");
+                    return Redirect($"/commute/new/{HttpContext.Session.GetInt32("cpId")}");
                 }
                 else
                 {
