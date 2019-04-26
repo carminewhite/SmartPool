@@ -7,12 +7,16 @@
         <h3 class="mt-4">Carpool Name: @Model.Name</h3>
         <p><span class="font-weight-bold">Description:</span>@Model.Description</p>
         <div class="mt-4">
-            <a href="" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
-            <a href="" class="mb-0 d-inline btn btn-info p-3">Contact Pool Creator</a>
-        @if (@Model.UserId == @ViewBag.logged_in_user.Id)
-        {
-            <a href="/update/carpool/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
-        }
+            @if (@Model.UserId == @ViewBag.logged_in_user.Id)
+            {
+                <a href="/update/carpool/@Model.Id" class="mb-0 d-inline btn btn-info p-3">Edit Carpool</a>
+                <a href="/delete-carpool/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Delete Carpool</a>
+            }
+            else
+            {
+                <a href="/ridership/leave/@ViewBag.logged_in_user.Id/@Model.Id" class="mb-0 d-inline btn btn-danger p-3">Leave Carpool</a>
+                <a href="" class="mb-0 d-inline btn btn-info p-3">Contact Pool Creator</a>
+            }
         </div>
     </div>
 </div>
