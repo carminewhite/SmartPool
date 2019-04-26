@@ -1,15 +1,39 @@
-﻿<div class="row justify-content-center">
-    <h1 class="d-block">SmartPool</h1>
+﻿@{
+    Layout = null;
+}
+
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <title>SmartPool</title>
+  </head>
+  <body class="splashpage">
+    <div class="row">
+        <div class="col-2"></div>
+        
+        <div class="col-5">
+            <img src="~/images/splash5.png" class="border border-white" width="800px">
+
+        </div>
+       
+        <div class="col-3 text-center">
+            <partial name="_LogForm"/>
+            <a href="/registration">Register Here</a>
+            <h4 class="mt-4 text-center text-white">The carpooling app where you make the rules!</h4>
+        </div>
+        <div class="col-2"></div>
+
+    </div>
+
+
+<div class="row justify-content-center">
 </div>
 <div class="row justify-content-center">
-    <h5 class="d-block">Save money, make friends, beat the traffic!</h5>
 </div>
 <div class="row justify-content-center">
-    <h5 class="d-block">The carpooling app where you make the rules!</h5>
 </div>
-<div class="row justify-content-center">
-    <partial name="_LogForm"/>
-</div>
-<div class="mt-2 row justify-content-center">
-    <a href="/registration">Register Here</a>
-</div>
+</body>
+</html>
