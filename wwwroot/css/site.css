@@ -77,8 +77,14 @@ body {
 
 
 .splashpage {
-    /* background-image: url("splash.jpg"); */
     background-color:#1b2e34;
+}
+
+.splashimage {
+    background: url("../images/splash5.png") no-repeat center;
+    /* background-image: url("../images/splash5.png"); */
+    background-size: cover;
+    padding-top: 25%;
 }
 
 .sep-bar {
